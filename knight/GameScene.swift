@@ -10,6 +10,7 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
+    var menu = SKLabelNode(text: "menu")
     let cam = SKCameraNode()
     var player : SKSpriteNode?
     var tileMap : SKTileMapNode?
@@ -64,6 +65,12 @@ class GameScene: SKScene {
       halfWidth = CGFloat(tileMap!.numberOfColumns) / 2.0 * tileSize!.width
        halfHeight = CGFloat(tileMap!.numberOfRows) / 2.0 * tileSize!.height
      
+        menu.position = CGPoint(x:camera!.position.x-(scene!.size.width)/3, y: camera!.position.y+(scene!.size.width)/5)
+         menu.zPosition = 3
+        menu.fontSize = scene!.size.width/19
+         menu.fontColor = SKColor.white
+         menu.alpha = 0.8
+         cam.addChild(menu)
        for col in 0..<tileMap!.numberOfColumns {
            for row in 0..<tileMap!.numberOfRows {
                let tileDefinition = tileMap!.tileDefinition(atColumn: col, row: row)
@@ -115,7 +122,26 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-  
+        for touch: AnyObject in touches{
+           let pointOfTouch = touch.location(in: self.camera!)
+           if menu.contains(pointOfTouch){
+               if let view = self.view {
+                   // Load the SKScene from 'GameScene.sks'
+                   if let scene = SKScene(fileNamed: "Menu") {
+                       // Set the scale mode to scale to fit the window
+                       scene.scaleMode = .aspectFill
+                       
+                       // Present the scene
+                       view.presentScene(scene)
+                   }
+                   view.showsPhysics = false
+                   view.ignoresSiblingOrder = true
+                   
+                   view.showsFPS = true
+                   view.showsNodeCount = true //hi
+               }
+           }
+        }
         
 
     }
