@@ -17,8 +17,9 @@ class GameScene: SKScene {
     var halfWidth : CGFloat?
     var halfHeight : CGFloat?
     var nodesListGround = [SKShapeNode]()
+    var skelV=CGFloat(80)
+    var skelTimer=0
     let velocityMultiplier: CGFloat = 0.12
-//    var skel: SKSpriteNode?
     var x : CGFloat?
     var y : CGFloat?
     struct PhysicsCategory {
@@ -41,17 +42,21 @@ class GameScene: SKScene {
       return js
     }()
     override func didMove(to view: SKView) {
+        
+        scene!.enumerateChildNodes(withName: "//skeleton") {
+            (node, stop) in
+            node.isPaused=true
+            node.isPaused=false
+            node.physicsBody?.velocity.dx=self.skelV
+        }
         print(self.size)
         view.isMultipleTouchEnabled=true
         setupJoystick()
         player = childNode(withName: "player") as?SKSpriteNode
-//        skel = childNode(withName: "//skeleton") as?SKSpriteNode
-//        skel?.isPaused=false
         self.camera = cam
         cam.xScale=3
         cam.yScale=3
         self.addChild(cam)
-//        cam.addChild(analogJoystick)
         let constraint = SKConstraint.distance(SKRange(constantValue: 0), to: player!)
         camera!.constraints = [ constraint ]
         tileMap = (self.childNode(withName: "Tile Map Node") as? SKTileMapNode)!
@@ -129,6 +134,26 @@ class GameScene: SKScene {
     
     
     override func update(_ currentTime: TimeInterval) {
+        skelTimer+=1
+        scene!.enumerateChildNodes(withName: "//skeleton") {
+            (node, stop) in
+//            node.position.x+=self.skelV
+//            if (self.skelTimer%60==0){
+//                self.skelTimer=0
+//                self.skelV = -self.skelV
+//                node.xScale = -node.xScale
+//            }
+            if (abs((node.physicsBody?.velocity.dx)!) < 5){
 
+                self.skelV = -self.skelV
+                node.physicsBody?.velocity.dx = self.skelV
+                if ((node.physicsBody?.velocity.dx)! > 0){
+                    node.xScale = 1
+                } else {
+                    node.xScale = -1
+                }
+                
+            }
+        }
     }
 }
