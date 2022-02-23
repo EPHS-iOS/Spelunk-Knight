@@ -18,6 +18,7 @@ class GameScene: SKScene {
     var halfHeight : CGFloat?
     var nodesListGround = [SKShapeNode]()
     let velocityMultiplier: CGFloat = 0.12
+//    var skel: SKSpriteNode?
     var x : CGFloat?
     var y : CGFloat?
     struct PhysicsCategory {
@@ -34,19 +35,23 @@ class GameScene: SKScene {
     }
     lazy var analogJoystick: AnalogJoystick = {
       let js = AnalogJoystick(diameter: 300, colors: nil, images: (substrate: #imageLiteral(resourceName: "jSubstrate"), stick: #imageLiteral(resourceName: "jStick")))
-        let ScreenSize = UIScreen.main.bounds
-        js.position = CGPoint(x: ScreenSize.width * -2.5 + js.radius , y: ScreenSize.height * -0.5 + js.radius + 45)
+        let ScreenSize = self.size
+        js.position = CGPoint(x: cam.position.x+ScreenSize.width * -0.75, y: cam.position.y+ScreenSize.height * -0.75)
       js.zPosition = 3
       return js
     }()
     override func didMove(to view: SKView) {
+        print(self.size)
         view.isMultipleTouchEnabled=true
         setupJoystick()
         player = childNode(withName: "player") as?SKSpriteNode
+//        skel = childNode(withName: "//skeleton") as?SKSpriteNode
+//        skel?.isPaused=false
         self.camera = cam
         cam.xScale=3
         cam.yScale=3
         self.addChild(cam)
+//        cam.addChild(analogJoystick)
         let constraint = SKConstraint.distance(SKRange(constantValue: 0), to: player!)
         camera!.constraints = [ constraint ]
         tileMap = (self.childNode(withName: "Tile Map Node") as? SKTileMapNode)!
@@ -81,11 +86,12 @@ class GameScene: SKScene {
         }
     }
     func setupJoystick() {
-           addChild(analogJoystick)
+        addChild(analogJoystick)
        
            analogJoystick.trackingHandler = { [unowned self] data in
                self.player?.position = CGPoint(x: (self.player?.position.x)! + (data.velocity.x * self.velocityMultiplier),
                                                y: (player?.position.y)!)
+               
 //             self.player?.zRotation = data.angular
            }
        
@@ -123,6 +129,6 @@ class GameScene: SKScene {
     
     
     override func update(_ currentTime: TimeInterval) {
-   
+
     }
 }

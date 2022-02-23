@@ -17,6 +17,7 @@
 		2B5DF3F127BABEDD003F90F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B5DF3F027BABEDD003F90F1 /* Assets.xcassets */; };
 		2B5DF3F427BABEDD003F90F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B5DF3F227BABEDD003F90F1 /* LaunchScreen.storyboard */; };
 		2BDBC27C27C2FCF8002BFA5C /* AnalogStick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDBC27B27C2FCF8002BFA5C /* AnalogStick.swift */; };
+		9D153A6927C69A3300E3E3B9 /* skeleton.sks in Resources */ = {isa = PBXBuildFile; fileRef = 9D153A6827C69A3300E3E3B9 /* skeleton.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		2B5DF3F027BABEDD003F90F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2B5DF3F327BABEDD003F90F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2BDBC27B27C2FCF8002BFA5C /* AnalogStick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalogStick.swift; sourceTree = "<group>"; };
+		9D153A6827C69A3300E3E3B9 /* skeleton.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = skeleton.sks; sourceTree = "<group>"; };
 		9D34B3E527BEB82C00FC137E /* knight.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = knight.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -68,6 +70,7 @@
 				2B5DF3E327BABED9003F90F1 /* AppDelegate.swift */,
 				2B5DF3E727BABED9003F90F1 /* Actions.sks */,
 				2B5DF3E527BABED9003F90F1 /* GameScene.sks */,
+				9D153A6827C69A3300E3E3B9 /* skeleton.sks */,
 				2B5DF3E927BABED9003F90F1 /* GameScene.swift */,
 				2B5DF3EB27BABED9003F90F1 /* GameViewController.swift */,
 				2BDBC27B27C2FCF8002BFA5C /* AnalogStick.swift */,
@@ -141,6 +144,7 @@
 				2B5DF3EF27BABED9003F90F1 /* Main.storyboard in Resources */,
 				2B5DF3E627BABED9003F90F1 /* GameScene.sks in Resources */,
 				2B5DF3F127BABEDD003F90F1 /* Assets.xcassets in Resources */,
+				9D153A6927C69A3300E3E3B9 /* skeleton.sks in Resources */,
 				2B5DF3F427BABEDD003F90F1 /* LaunchScreen.storyboard in Resources */,
 				2B5DF3E827BABED9003F90F1 /* Actions.sks in Resources */,
 			);
