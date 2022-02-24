@@ -163,14 +163,13 @@ class GameScene: SKScene {
         skelTimer+=1
         scene!.enumerateChildNodes(withName: "//skeleton") {
             (node, stop) in
-//            node.position.x+=self.skelV
-//            if (self.skelTimer%60==0){
-//                self.skelTimer=0
-//                self.skelV = -self.skelV
-//                node.xScale = -node.xScale
-//            }
-            if (abs((node.physicsBody?.velocity.dx)!) < 5){
-
+            if (self.skelTimer%60<20){
+                node.run(SKAction.setTexture(SKTexture(imageNamed: "knightStandard")))
+                node.physicsBody?.velocity.dx = 0
+            } else if (node.physicsBody?.velocity.dx == 0){
+                node.physicsBody?.velocity.dx = self.skelV
+            }
+            if (abs((node.physicsBody?.velocity.dx)!) < 5)&&(abs((node.physicsBody?.velocity.dx)!) > 0){
                 self.skelV = -self.skelV
                 node.physicsBody?.velocity.dx = self.skelV
                 if ((node.physicsBody?.velocity.dx)! > 0){
