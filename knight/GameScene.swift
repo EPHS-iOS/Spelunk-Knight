@@ -38,7 +38,7 @@ class GameScene: SKScene {
     lazy var analogJoystick: AnalogJoystick = {
         let js = AnalogJoystick(diameter: scene!.size.width/9, colors: nil, images: (substrate: #imageLiteral(resourceName: "jSubstrate"), stick: #imageLiteral(resourceName: "jStick")))
         let ScreenSize = self.size
-        js.position = CGPoint(x:camera!.position.x-(scene!.size.width)/3.5, y: camera!.position.y-(scene!.size.width)/1.4)
+        js.position = CGPoint(x:-(ScreenSize.width)/3, y: -(ScreenSize.height)/3)
         js.zPosition = 3
         cam.addChild(js)
       return js
