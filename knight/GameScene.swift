@@ -36,10 +36,11 @@ class GameScene: SKScene {
 //        static let laser : UInt32 = 0b1000//8
     }
     lazy var analogJoystick: AnalogJoystick = {
-      let js = AnalogJoystick(diameter: 300, colors: nil, images: (substrate: #imageLiteral(resourceName: "jSubstrate"), stick: #imageLiteral(resourceName: "jStick")))
+        let js = AnalogJoystick(diameter: scene!.size.width/9, colors: nil, images: (substrate: #imageLiteral(resourceName: "jSubstrate"), stick: #imageLiteral(resourceName: "jStick")))
         let ScreenSize = self.size
-        js.position = CGPoint(x: cam.position.x+ScreenSize.width * -0.75, y: cam.position.y+ScreenSize.height * -0.75)
-      js.zPosition = 3
+        js.position = CGPoint(x:camera!.position.x-(scene!.size.width)/3.5, y: camera!.position.y-(scene!.size.width)/1.4)
+        js.zPosition = 3
+        cam.addChild(js)
       return js
     }()
     override func didMove(to view: SKView) {
@@ -98,7 +99,7 @@ class GameScene: SKScene {
         }
     }
     func setupJoystick() {
-        addChild(analogJoystick)
+        //addChild(analogJoystick)
        
            analogJoystick.trackingHandler = { [unowned self] data in
                self.player?.position = CGPoint(x: (self.player?.position.x)! + (data.velocity.x * self.velocityMultiplier),
