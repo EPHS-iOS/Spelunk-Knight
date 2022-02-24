@@ -20,6 +20,7 @@ class GameScene: SKScene {
     var nodesListGround = [SKShapeNode]()
     var skelV=CGFloat(80)
     var skelTimer=0
+    var attackSprites :[SKTexture] = [SKTexture]()
     let velocityMultiplier: CGFloat = 0.12
     var x : CGFloat?
     var y : CGFloat?
@@ -44,14 +45,15 @@ class GameScene: SKScene {
       return js
     }()
     override func didMove(to view: SKView) {
-        
+        for i in 1...18{
+            attackSprites.append(SKTexture(imageNamed: "sa"+String(i)))
+        }
         scene!.enumerateChildNodes(withName: "//skeleton") {
             (node, stop) in
             node.isPaused=true
             node.isPaused=false
             node.physicsBody?.velocity.dx=self.skelV
         }
-        print(self.size)
         view.isMultipleTouchEnabled=true
         setupJoystick()
         player = childNode(withName: "player") as?SKSpriteNode
@@ -164,15 +166,29 @@ class GameScene: SKScene {
         skelTimer+=1
         scene!.enumerateChildNodes(withName: "//skeleton") {
             (node, stop) in
-            if (self.skelTimer%60<20){
-                node.run(SKAction.setTexture(SKTexture(imageNamed: "knightStandard")))
+            if (self.skelTimer%200<36){
+                if ((node.xScale==1)||(node.xScale == -1)){
+                    node.xScale=node.xScale*43/22
+                }
+                node.yScale=37/33
+                node.run(SKAction.setTexture(self.attackSprites[Int(self.skelTimer/2)]))
                 node.physicsBody?.velocity.dx = 0
             } else if (node.physicsBody?.velocity.dx == 0){
-                node.physicsBody?.velocity.dx = self.skelV
+                if (node.xScale>0){
+                    node.physicsBody?.velocity.dx = 80
+                    node.xScale=1
+                } else {
+                    node.physicsBody?.velocity.dx = -80
+                    node.xScale = -1
+                }
+                
+            }
+            if (self.skelTimer==199){
+                self.skelTimer=0
             }
             if (abs((node.physicsBody?.velocity.dx)!) < 5)&&(abs((node.physicsBody?.velocity.dx)!) > 0){
-                self.skelV = -self.skelV
-                node.physicsBody?.velocity.dx = self.skelV
+//                self.skelV = -self.skelV
+                node.physicsBody?.velocity.dx = 80*((node.physicsBody?.velocity.dx)!/abs((node.physicsBody?.velocity.dx)!))
                 if ((node.physicsBody?.velocity.dx)! > 0){
                     node.xScale = 1
                 } else {

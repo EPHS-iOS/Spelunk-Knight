@@ -22,7 +22,6 @@ class GameViewController: UIViewController {
             
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFit
-                
                 // Present the scene
                 view.presentScene(scene)
             }
