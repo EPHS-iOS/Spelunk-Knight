@@ -181,6 +181,7 @@ class GameScene: SKScene {
                     node.physicsBody?.velocity.dx = -80
                     node.xScale = -1
                 }
+                node.yScale=1
                 
             }
             if (self.skelTimer==199){
