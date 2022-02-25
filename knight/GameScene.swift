@@ -175,7 +175,7 @@ class GameScene: SKScene {
     
     
     override func update(_ currentTime: TimeInterval) {
-        print(player?.physicsBody?.velocity.dy)
+//        print(player?.physicsBody?.velocity.dy)
         if((player?.physicsBody?.velocity.dy)! <= 0.1 && (player?.physicsBody?.velocity.dy)! >= -0.1){
             canJump = true
         }else{
@@ -206,7 +206,7 @@ class GameScene: SKScene {
             if (self.skelTimer==199){
                 self.skelTimer=0
             }
-            if ((abs((node.physicsBody?.velocity.dx)!) < 5)&&(abs((node.physicsBody?.velocity.dx)!) >= 0)){
+            if ((abs((node.physicsBody?.velocity.dx)!) < 5)&&(abs((node.physicsBody?.velocity.dx)!) > 0)){
 //                self.skelV = -self.skelV
                 node.physicsBody?.velocity.dx = 80*((node.physicsBody?.velocity.dx)!/abs((node.physicsBody?.velocity.dx)!))
                 if ((node.physicsBody?.velocity.dx)! > 0){
