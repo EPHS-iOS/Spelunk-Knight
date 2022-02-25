@@ -16,9 +16,12 @@ class GameScene: SKScene {
     var tileMap : SKTileMapNode?
     var tileSize : CGSize?
     var halfWidth : CGFloat?
+    var canJump : Bool?
     var halfHeight : CGFloat?
     var nodesListGround = [SKShapeNode]()
     var skelV=CGFloat(80)
+    let jump = SKSpriteNode(imageNamed: "jumparrowKnight")
+    let attack = SKSpriteNode(imageNamed:"jStick")
     var skelTimer=0
     var attackSprites :[SKTexture] = [SKTexture]()
     let velocityMultiplier: CGFloat = 0.12
@@ -39,12 +42,13 @@ class GameScene: SKScene {
     lazy var analogJoystick: AnalogJoystick = {
         let js = AnalogJoystick(diameter: scene!.size.width/9, colors: nil, images: (substrate: #imageLiteral(resourceName: "jSubstrate"), stick: #imageLiteral(resourceName: "jStick")))
         let ScreenSize = self.size
-        js.position = CGPoint(x:-(ScreenSize.width)/3, y: -(ScreenSize.height)/3)
+        js.position = CGPoint(x:-(scene!.size.width)/3, y: -(scene!.size.height)/3)
         js.zPosition = 3
         cam.addChild(js)
       return js
     }()
     override func didMove(to view: SKView) {
+        
         for i in 1...18{
             attackSprites.append(SKTexture(imageNamed: "sa"+String(i)))
         }
@@ -74,6 +78,11 @@ class GameScene: SKScene {
          menu.fontColor = SKColor.white
          menu.alpha = 0.8
          cam.addChild(menu)
+        jump.position = CGPoint(x:camera!.position.x+(scene!.size.width)/4, y: camera!.position.y-(scene!.size.width)/5.5)
+               jump.zPosition = 3
+              jump.size=CGSize(width:scene!.size.width/7,height:scene!.size.width/6)
+               jump.alpha = 0.8
+               cam.addChild(jump)
        for col in 0..<tileMap!.numberOfColumns {
            for row in 0..<tileMap!.numberOfRows {
                let tileDefinition = tileMap!.tileDefinition(atColumn: col, row: row)
@@ -144,6 +153,9 @@ class GameScene: SKScene {
                    view.showsNodeCount = true //hi
                }
            }
+            if(jump.contains(pointOfTouch)&&canJump==true){
+                player?.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 550))
+            }
         }
         
 
@@ -163,6 +175,13 @@ class GameScene: SKScene {
     
     
     override func update(_ currentTime: TimeInterval) {
+        print(player?.physicsBody?.velocity.dy)
+        if((player?.physicsBody?.velocity.dy)! <= 0.1 && (player?.physicsBody?.velocity.dy)! >= -0.1){
+            canJump = true
+        }else{
+            canJump = false
+        }
+        
         skelTimer+=1
         scene!.enumerateChildNodes(withName: "//skeleton") {
             (node, stop) in
