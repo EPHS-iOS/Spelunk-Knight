@@ -191,14 +191,22 @@ class GameScene: SKScene {
                 }
                 node.yScale=37/33
                 node.run(SKAction.setTexture(self.attackSprites[Int(self.skelTimer/2)]))
+                node.physicsBody=SKPhysicsBody(texture: self.attackSprites[Int(self.skelTimer/2)], size:CGSize(width: 132*node.xScale, height: 192*node.yScale))
+                node.physicsBody?.allowsRotation=false
+                node.physicsBody?.affectedByGravity=true
                 node.physicsBody?.velocity.dx = 0
             } else if (node.physicsBody?.velocity.dx == 0){
+                node.physicsBody=SKPhysicsBody(texture: SKTexture(imageNamed: "s1"), size:CGSize(width: 132*node.xScale, height: 192*node.yScale))
+                node.physicsBody?.allowsRotation=false
+                node.physicsBody?.affectedByGravity=true
                 if (node.xScale>0){
                     node.physicsBody?.velocity.dx = 80
                     node.xScale=1
+//                    print("hi")
                 } else {
                     node.physicsBody?.velocity.dx = -80
                     node.xScale = -1
+//                    print("hi")
                 }
                 node.yScale=1
                 
@@ -206,6 +214,7 @@ class GameScene: SKScene {
             if (self.skelTimer==199){
                 self.skelTimer=0
             }
+//            print(node.physicsBody?.velocity.dx)
             if ((abs((node.physicsBody?.velocity.dx)!) < 5)&&(abs((node.physicsBody?.velocity.dx)!) > 0)){
 //                self.skelV = -self.skelV
                 node.physicsBody?.velocity.dx = 80*((node.physicsBody?.velocity.dx)!/abs((node.physicsBody?.velocity.dx)!))
