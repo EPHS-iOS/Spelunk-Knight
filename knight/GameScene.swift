@@ -11,10 +11,14 @@ import GameplayKit
 
 class GameScene: SKScene {
     var menu = SKLabelNode(text: "menu")
+    var health = SKLabelNode(text:"Health: 100")
     let cam = SKCameraNode()
     var player : SKSpriteNode?
     var tileMap : SKTileMapNode?
     var tileSize : CGSize?
+    var turnedRight : Bool?
+    var turnedLeft : Bool?
+    var noTurn : Bool?
     var halfWidth : CGFloat?
     var canJump : Bool?
     var halfHeight : CGFloat?
@@ -40,6 +44,7 @@ class GameScene: SKScene {
 //        static let laser : UInt32 = 0b1000//8
     }
     lazy var analogJoystick: AnalogJoystick = {
+        scene?.view?.showsPhysics = true
         let js = AnalogJoystick(diameter: scene!.size.width/9, colors: nil, images: (substrate: #imageLiteral(resourceName: "jSubstrate"), stick: #imageLiteral(resourceName: "jStick")))
         let ScreenSize = self.size
         js.position = CGPoint(x:-(scene!.size.width)/3, y: -(scene!.size.height)/3)
@@ -48,9 +53,14 @@ class GameScene: SKScene {
       return js
     }()
     override func didMove(to view: SKView) {
+        turnedLeft = false
+        turnedRight = false
+        if(turnedLeft == false && turnedRight == false){
+            noTurn = true
+        }
         
         for i in 1...18{
-            attackSprites.append(SKTexture(imageNamed: "sa"+String(i)))
+           attackSprites.append(SKTexture(imageNamed: "sa"+String(i)))
         }
         scene!.enumerateChildNodes(withName: "//skeleton") {
             (node, stop) in
@@ -77,12 +87,25 @@ class GameScene: SKScene {
         menu.fontSize = scene!.size.width/19
          menu.fontColor = SKColor.white
          menu.alpha = 0.8
+        
+        health.position = CGPoint(x:camera!.position.x, y: camera!.position.y+(scene!.size.width)/5)
+         health.zPosition = 3
+        health.fontSize = scene!.size.width/19
+         health.fontColor = SKColor.white
+         health.alpha = 0.8
+        cam.addChild(health)
+        
          cam.addChild(menu)
         jump.position = CGPoint(x:camera!.position.x+(scene!.size.width)/4, y: camera!.position.y-(scene!.size.width)/5.5)
                jump.zPosition = 3
               jump.size=CGSize(width:scene!.size.width/7,height:scene!.size.width/6)
                jump.alpha = 0.8
                cam.addChild(jump)
+        attack.position = CGPoint(x:camera!.position.x+(scene!.size.width)/2.8, y: camera!.position.y-(scene!.size.width)/6)
+        attack.zPosition = 3
+        attack.size = CGSize(width:scene!.size.width/15,height:scene!.size.width/15)
+        attack.alpha = 1
+        cam.addChild(attack)
        for col in 0..<tileMap!.numberOfColumns {
            for row in 0..<tileMap!.numberOfRows {
                let tileDefinition = tileMap!.tileDefinition(atColumn: col, row: row)
@@ -99,6 +122,7 @@ class GameScene: SKScene {
                    //tileNode.physicsBody?.usesPreciseCollisionDetection = true
                     tileNode.alpha=0
                    tileNode.physicsBody?.categoryBitMask = PhysicsCategory.map
+                    tileNode.physicsBody?.friction = 0
                    tileNode.physicsBody?.collisionBitMask = PhysicsCategory.none
                    //tileNode.physicsBody?.contactTestBitMask = PhysicsCategory.bullet
                    tileNode.physicsBody?.contactTestBitMask = PhysicsCategory.player
@@ -115,8 +139,45 @@ class GameScene: SKScene {
            analogJoystick.trackingHandler = { [unowned self] data in
                self.player?.position = CGPoint(x: (self.player?.position.x)! + (data.velocity.x * self.velocityMultiplier),
                                                y: (player?.position.y)!)
-               
-//             self.player?.zRotation = data.angular
+               if(data.velocity.x<0&&turnedLeft==false){
+                turnedLeft = true
+                   turnedRight = false
+                   noTurn=false
+                  
+                  
+                     //  print("changeleft")
+                       player?.texture = SKTexture(imageNamed: "knightStandardLeft")
+                    player?.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "knightStandardLeft"),
+                                                          size:SKTexture(imageNamed: "knightStandardLeft").size())
+                   player?.physicsBody?.allowsRotation=false
+                   player?.physicsBody?.affectedByGravity=true
+                 player?.physicsBody?.mass = 0.788289368152618
+                   player?.physicsBody?.friction = 0.2
+                   player?.physicsBody?.restitution = 0.2
+                   player?.physicsBody?.linearDamping = 0.1
+                   player?.physicsBody?.angularDamping = 0.1
+                   
+               }
+               if(data.velocity.x>0&&turnedRight==false){
+                   turnedRight = true
+                   turnedLeft = false
+                   noTurn=false
+            
+                      // print("change")
+                       player?.texture = SKTexture(imageNamed: "knightStandard")
+                    player?.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "knightStandard"),
+                                                          size:SKTexture(imageNamed: "knightStandard").size())
+                   player?.physicsBody?.allowsRotation=false
+                   player?.physicsBody?.affectedByGravity=true
+                  player?.physicsBody?.mass = 0.788289368152618
+                   player?.physicsBody?.friction = 0.2
+                   player?.physicsBody?.restitution = 0.2
+                   player?.physicsBody?.linearDamping = 0.1
+                   player?.physicsBody?.angularDamping = 0.1
+                   
+               }
+            //   print(atan(data.velocity.y/data.velocity.x))
+           
            }
        
      }
@@ -156,7 +217,12 @@ class GameScene: SKScene {
             if(jump.contains(pointOfTouch)&&canJump==true){
                 player?.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 550))
             }
+            if attack.contains(pointOfTouch){
+                playerRunningRight(player:player!)
+                playerRunningLeft(player: player!)
+            }
         }
+       
         
 
     }
@@ -172,9 +238,31 @@ class GameScene: SKScene {
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
 
     }
-    
+    func playerRunningRight(player: SKSpriteNode){
+        if(turnedRight==true||noTurn==true){
+            let texture1 = SKTexture(imageNamed: "knightAttack1")
+            let texture2 = SKTexture(imageNamed: "knightAttack2")
+            let texture3 = SKTexture(imageNamed: "knightAttack3")
+            let texture4 = SKTexture(imageNamed: "knightStandard")
+            let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4], timePerFrame: 0.125)
+            player.run(animate, withKey:"attackingRightAction")
+        }
+        }
+    func playerRunningLeft(player: SKSpriteNode){
+        if(turnedLeft==true){
+            let texture1 = SKTexture(imageNamed: "knightAttack1Left")
+            let texture2 = SKTexture(imageNamed: "knightAttack2Left")
+            let texture3 = SKTexture(imageNamed: "knightAttack3Left")
+            let texture4 = SKTexture(imageNamed: "knightStandardLeft")
+            let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4], timePerFrame: 0.125)
+            player.run(animate, withKey:"attackingLeftAction")
+        }
+        }
     
     override func update(_ currentTime: TimeInterval) {
+        
+      
+       
 //        print(player?.physicsBody?.velocity.dy)
         if((player?.physicsBody?.velocity.dy)! <= 0.1 && (player?.physicsBody?.velocity.dy)! >= -0.1){
             canJump = true
@@ -191,14 +279,14 @@ class GameScene: SKScene {
                 }
                 node.yScale=37/33
                 node.run(SKAction.setTexture(self.attackSprites[Int(self.skelTimer/2)]))
-                node.physicsBody=SKPhysicsBody(texture: self.attackSprites[Int(self.skelTimer/2)], size:CGSize(width: 132*node.xScale, height: 192*node.yScale))
-                node.physicsBody?.allowsRotation=false
-                node.physicsBody?.affectedByGravity=true
-                node.physicsBody?.velocity.dx = 0
+//                node.physicsBody=SKPhysicsBody(texture: self.attackSprites[Int(self.skelTimer/2)], size:CGSize(width: 132*node.xScale, height: 192*node.yScale))
+//                node.physicsBody?.allowsRotation=false
+//                node.physicsBody?.affectedByGravity=true
+//                node.physicsBody?.velocity.dx = 0
             } else if (node.physicsBody?.velocity.dx == 0){
-                node.physicsBody=SKPhysicsBody(texture: SKTexture(imageNamed: "s1"), size:CGSize(width: 132*node.xScale, height: 192*node.yScale))
-                node.physicsBody?.allowsRotation=false
-                node.physicsBody?.affectedByGravity=true
+//                node.physicsBody=SKPhysicsBody(texture: SKTexture(imageNamed: "s1"), size:CGSize(width: 132*node.xScale, height: 192*node.yScale))
+//                node.physicsBody?.allowsRotation=false
+//                node.physicsBody?.affectedByGravity=true
                 if (node.xScale>0){
                     node.physicsBody?.velocity.dx = 80
                     node.xScale=1
