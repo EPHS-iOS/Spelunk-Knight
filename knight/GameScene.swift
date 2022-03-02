@@ -44,7 +44,7 @@ class GameScene: SKScene {
 //        static let laser : UInt32 = 0b1000//8
     }
     lazy var analogJoystick: AnalogJoystick = {
-        scene?.view?.showsPhysics = true
+        scene?.view?.showsPhysics = false
         let js = AnalogJoystick(diameter: scene!.size.width/9, colors: nil, images: (substrate: #imageLiteral(resourceName: "jSubstrate"), stick: #imageLiteral(resourceName: "jStick")))
         let ScreenSize = self.size
         js.position = CGPoint(x:-(scene!.size.width)/3, y: -(scene!.size.height)/3)
