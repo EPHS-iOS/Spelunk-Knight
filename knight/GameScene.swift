@@ -68,6 +68,12 @@ class GameScene: SKScene {
             node.isPaused=false
             node.physicsBody?.velocity.dx=self.skelV
         }
+        scene!.enumerateChildNodes(withName: "//rat") {
+            (node, stop) in
+            node.isPaused=true
+            node.isPaused=false
+            node.physicsBody?.velocity.dx=self.skelV
+        }
         view.isMultipleTouchEnabled=true
         setupJoystick()
         player = childNode(withName: "player") as?SKSpriteNode
