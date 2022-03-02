@@ -28,7 +28,8 @@ class GameScene: SKScene {
     let attack = SKSpriteNode(imageNamed:"jStick")
     var skelTimer=0
     var attackSprites :[SKTexture] = [SKTexture]()
-    let velocityMultiplier: CGFloat = 0.12
+    let velocityMultiplier: CGFloat = 0.17
+    let ju: CGFloat = 950
     var x : CGFloat?
     var y : CGFloat?
     struct PhysicsCategory {
@@ -45,7 +46,7 @@ class GameScene: SKScene {
     }
     lazy var analogJoystick: AnalogJoystick = {
         scene?.view?.showsPhysics = false
-        let js = AnalogJoystick(diameter: scene!.size.width/9, colors: nil, images: (substrate: #imageLiteral(resourceName: "jSubstrate"), stick: #imageLiteral(resourceName: "jStick")))
+        let js = AnalogJoystick(diameter: scene!.size.width/6, colors: nil, images: (substrate: #imageLiteral(resourceName: "jSubstrate"), stick: #imageLiteral(resourceName: "jStick")))
         let ScreenSize = self.size
         js.position = CGPoint(x:-(scene!.size.width)/3, y: -(scene!.size.height)/3)
         js.zPosition = 3
@@ -159,7 +160,7 @@ class GameScene: SKScene {
                    player?.physicsBody?.affectedByGravity=true
                  player?.physicsBody?.mass = 0.788289368152618
                    player?.physicsBody?.friction = 0.2
-                   player?.physicsBody?.restitution = 0.2
+                   player?.physicsBody?.restitution = 0.0
                    player?.physicsBody?.linearDamping = 0.1
                    player?.physicsBody?.angularDamping = 0.1
                    
@@ -221,7 +222,7 @@ class GameScene: SKScene {
                }
            }
             if(jump.contains(pointOfTouch)&&canJump==true){
-                player?.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 550))
+                player?.physicsBody?.applyImpulse(CGVector(dx: 0, dy: ju))
             }
             if attack.contains(pointOfTouch){
                 playerRunningRight(player:player!)
