@@ -86,13 +86,13 @@ class GameScene: SKScene {
         player?.physicsBody?.restitution = 0.0
         player?.physicsBody?.collisionBitMask=PhysicsCategory.map
 
-        if(defaul.float(forKey: "spawnX")==0.0){
-            defaul.setValue(Float((player?.position.x)!), forKey:  "spawnX")
+        if(defaul.float(forKey: "spawnx")==0.0){
+            defaul.setValue(Float((player?.position.x)!), forKey:  "spawnx")
         }
-        if(defaul.float(forKey: "spawnY")==0.0){
-            defaul.setValue(Float((player?.position.y)!), forKey:  "spawnY")
+        if(defaul.float(forKey: "spawny")==0.0){
+            defaul.setValue(Float((player?.position.y)!), forKey:  "spawny")
         }
-        player!.position=CGPoint(x: CGFloat(defaul.float(forKey: "spawnX")), y: CGFloat(defaul.float(forKey: "spawnY")))
+        player!.position=CGPoint(x: CGFloat(defaul.float(forKey: "spawnx")), y: CGFloat(defaul.float(forKey: "spawny")))
         self.camera = cam
         cam.xScale=3
         cam.yScale=3
@@ -333,11 +333,11 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         for i in player!.physicsBody!.allContactedBodies(){
             if (i.categoryBitMask==PhysicsCategory.campfire){
-                defaul.setValue(Float((player?.position.x)!), forKey:  "spawnX")
-                defaul.setValue(Float((player?.position.y)!), forKey:  "spawnY")
+                defaul.setValue(Float((player?.position.x)!), forKey:  "spawnx")
+                defaul.setValue(Float((player?.position.y)!), forKey:  "spawny")
             }
             if (i.categoryBitMask==PhysicsCategory.spike){
-                player?.position=CGPoint(x: CGFloat(defaul.float(forKey: "spawnX")), y: CGFloat(defaul.float(forKey: "spawnY")))
+                player?.position=CGPoint(x: CGFloat(defaul.float(forKey: "spawnx")), y: CGFloat(defaul.float(forKey: "spawny")))
             }
         }
         //        print(player?.physicsBody?.velocity.dy)
