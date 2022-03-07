@@ -82,6 +82,7 @@ class GameScene: SKScene {
         setupJoystick()
         player = childNode(withName: "player") as?SKSpriteNode
         player?.physicsBody?.categoryBitMask=PhysicsCategory.player
+        player?.physicsBody?.restitution = 0.0
         player?.physicsBody?.collisionBitMask=PhysicsCategory.map
 
         if(defaul.float(forKey: "spawnX")==0.0){
@@ -144,6 +145,7 @@ class GameScene: SKScene {
                     tileNode.alpha=0
                     tileNode.physicsBody?.categoryBitMask = PhysicsCategory.map
                     tileNode.physicsBody?.friction = 0
+                    tileNode.physicsBody?.restitution=0
                     tileNode.physicsBody?.collisionBitMask = PhysicsCategory.none
                     //tileNode.physicsBody?.contactTestBitMask = PhysicsCategory.bullet
                     tileNode.physicsBody?.contactTestBitMask = PhysicsCategory.player
@@ -188,8 +190,7 @@ class GameScene: SKScene {
                 
                 //  print("changeleft")
                 player?.texture = SKTexture(imageNamed: "knightStandardLeft")
-                player?.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "knightStandardLeft"),
-                                                    size:SKTexture(imageNamed: "knightStandardLeft").size())
+                player?.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "knightStandardLeft"), size:SKTexture(imageNamed: "knightStandardLeft").size())
                 player?.physicsBody?.allowsRotation=false
                 player?.physicsBody?.affectedByGravity=true
                 player?.physicsBody?.mass = 0.788289368152618
@@ -215,7 +216,7 @@ class GameScene: SKScene {
                 player?.physicsBody?.affectedByGravity=true
                 player?.physicsBody?.mass = 0.788289368152618
                 player?.physicsBody?.friction = 0.2
-                player?.physicsBody?.restitution = 0.2
+                player?.physicsBody?.restitution = 0.0
                 player?.physicsBody?.linearDamping = 0.1
                 player?.physicsBody?.angularDamping = 0.1
                 player?.physicsBody?.categoryBitMask=PhysicsCategory.player
