@@ -41,6 +41,7 @@ class GameScene: SKScene {
         static let player : UInt32 = 0b10//2
         static let map : UInt32 = 0b100//3
         static let campfire : UInt32 = 0b11
+        static let spike : UInt32 = 0b101
         //        static let key : UInt32 = 0b100//4
         //        static let door : UInt32 = 0b101//5
         //        static let mapEdge : UInt32 = 0b110//6
@@ -132,6 +133,7 @@ class GameScene: SKScene {
                 let tileDefinition = tileMap!.tileDefinition(atColumn: col, row: row)
                 let isCobblestone = tileDefinition?.userData?["Cobblestone"] as? Bool
                 let isCampfire = tileDefinition?.userData?["checkpoint"] as? Bool
+                let isSpike = tileDefinition?.userData?["spike"] as? Bool
                 if (isCobblestone ?? false) {
                     x = CGFloat(col) * tileSize!.width - halfWidth!
                     y = CGFloat(row) * tileSize!.height - halfHeight!
@@ -169,6 +171,27 @@ class GameScene: SKScene {
                     //tileNode.physicsBody?.contactTestBitMask = PhysicsCategory.bullet
                     tileNode.physicsBody?.contactTestBitMask = PhysicsCategory.player
 
+                    
+                    tileMap!.addChild(tileNode)
+                    nodesListGround.append(tileNode)
+                }
+                if (isSpike ?? false) {
+                    x = CGFloat(col) * tileSize!.width - halfWidth!
+                    y = CGFloat(row) * tileSize!.height - halfHeight!
+                    let rect = CGRect(x: 0, y: 0, width: tileSize!.width, height: tileSize!.height)
+                    let tileNode = SKShapeNode(rect: rect)
+                    tileNode.position = CGPoint(x: x!, y: y!)
+                    tileNode.physicsBody = SKPhysicsBody.init(rectangleOf: tileSize!, center: CGPoint(x: tileSize!.width / 2.0, y: tileSize!.height / 2.0))
+                    tileNode.physicsBody?.isDynamic = false
+                    
+                    //tileNode.physicsBody?.usesPreciseCollisionDetection = true
+                    tileNode.alpha=0
+                    tileNode.physicsBody?.categoryBitMask = PhysicsCategory.spike
+                    tileNode.physicsBody?.friction = 0
+                    tileNode.physicsBody?.restitution=0
+                    tileNode.physicsBody?.collisionBitMask = PhysicsCategory.none
+                    //tileNode.physicsBody?.contactTestBitMask = PhysicsCategory.bullet
+                    tileNode.physicsBody?.contactTestBitMask = PhysicsCategory.player
                     
                     tileMap!.addChild(tileNode)
                     nodesListGround.append(tileNode)
@@ -313,7 +336,9 @@ class GameScene: SKScene {
                 defaul.setValue(Float((player?.position.x)!), forKey:  "spawnX")
                 defaul.setValue(Float((player?.position.y)!), forKey:  "spawnY")
             }
-            
+            if (i.categoryBitMask==PhysicsCategory.spike){
+                player?.position=CGPoint(x: CGFloat(defaul.float(forKey: "spawnX")), y: CGFloat(defaul.float(forKey: "spawnY")))
+            }
         }
         //        print(player?.physicsBody?.velocity.dy)
         
