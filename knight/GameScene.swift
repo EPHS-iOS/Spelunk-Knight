@@ -11,6 +11,7 @@ import GameplayKit
 let defaul = UserDefaults.standard
 
 class GameScene: SKScene {
+    var sk=Skeleton(pos: CGPoint(x: 50,y: 50), siz: CGSize(width: 132,height: 198))
     var menu = SKLabelNode(text: "menu")
     var health = SKLabelNode(text:"Health: 100")
     let cam = SKCameraNode()
@@ -103,7 +104,7 @@ class GameScene: SKScene {
         tileSize = tileMap?.tileSize
         halfWidth = CGFloat(tileMap!.numberOfColumns) / 2.0 * tileSize!.width
         halfHeight = CGFloat(tileMap!.numberOfRows) / 2.0 * tileSize!.height
-        
+        self.addChild(sk)
         menu.position = CGPoint(x:camera!.position.x-(scene!.size.width)/3, y: camera!.position.y+(scene!.size.width)/5)
         menu.zPosition = 3
         menu.fontSize = scene!.size.width/19
@@ -331,6 +332,7 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        sk.update()
         for i in player!.physicsBody!.allContactedBodies(){
             if (i.categoryBitMask==PhysicsCategory.campfire){
                 defaul.setValue(Float((player?.position.x)!), forKey:  "spawnx")
