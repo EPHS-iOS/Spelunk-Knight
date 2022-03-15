@@ -69,7 +69,7 @@ class Skeleton: SKSpriteNode{
             self.yScale=1
 //            print(xScale)
             if ((self.xScale != 1)&&(self.xScale != -1)){
-                print("hi")
+//                print("hi")
                 self.xScale=self.xScale*22/43
 //                self.physicsBody=SKPhysicsBody(texture: walkSprites[1], alphaThreshold: 0.5, size: sizee)
                 self.physicsBody=SKPhysicsBody(rectangleOf: sizee)
