@@ -18,9 +18,9 @@
 		2B5DF3F427BABEDD003F90F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B5DF3F227BABEDD003F90F1 /* LaunchScreen.storyboard */; };
 		2BAD872B27CFD1FF0022A7B6 /* rat.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD872A27CFD1FF0022A7B6 /* rat.sks */; };
 		2BDBC27C27C2FCF8002BFA5C /* AnalogStick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDBC27B27C2FCF8002BFA5C /* AnalogStick.swift */; };
+		46A10A0C27DA6B3F00DA87E3 /* ge.sks in Resources */ = {isa = PBXBuildFile; fileRef = 46A10A0B27DA6B3F00DA87E3 /* ge.sks */; };
 		46B3553027C6BC8600C021EB /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B3552F27C6BC8600C021EB /* Menu.swift */; };
 		46B3553227C6BC9E00C021EB /* Menu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 46B3553127C6BC9E00C021EB /* Menu.sks */; };
-		46B3553427C9430B00C021EB /* map.sks in Resources */ = {isa = PBXBuildFile; fileRef = 46B3553327C9430700C021EB /* map.sks */; };
 		9D153A6927C69A3300E3E3B9 /* skeleton.sks in Resources */ = {isa = PBXBuildFile; fileRef = 9D153A6827C69A3300E3E3B9 /* skeleton.sks */; };
 		9D2D466327D90C2100BDB4E7 /* Skeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2D466227D90C2100BDB4E7 /* Skeleton.swift */; };
 /* End PBXBuildFile section */
@@ -38,9 +38,9 @@
 		2B5DF3F327BABEDD003F90F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2BAD872A27CFD1FF0022A7B6 /* rat.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = rat.sks; sourceTree = "<group>"; };
 		2BDBC27B27C2FCF8002BFA5C /* AnalogStick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalogStick.swift; sourceTree = "<group>"; };
+		46A10A0B27DA6B3F00DA87E3 /* ge.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ge.sks; sourceTree = "<group>"; };
 		46B3552F27C6BC8600C021EB /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		46B3553127C6BC9E00C021EB /* Menu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Menu.sks; sourceTree = "<group>"; };
-		46B3553327C9430700C021EB /* map.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = map.sks; sourceTree = "<group>"; };
 		9D153A6827C69A3300E3E3B9 /* skeleton.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = skeleton.sks; sourceTree = "<group>"; };
 		9D2D466227D90C2100BDB4E7 /* Skeleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skeleton.swift; sourceTree = "<group>"; };
 		9D34B3E527BEB82C00FC137E /* knight.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = knight.entitlements; sourceTree = "<group>"; };
@@ -80,10 +80,10 @@
 				2B5DF3E327BABED9003F90F1 /* AppDelegate.swift */,
 				2B5DF3E727BABED9003F90F1 /* Actions.sks */,
 				2BAD872A27CFD1FF0022A7B6 /* rat.sks */,
+				46A10A0B27DA6B3F00DA87E3 /* ge.sks */,
 				2B5DF3E527BABED9003F90F1 /* GameScene.sks */,
 				9D2D466227D90C2100BDB4E7 /* Skeleton.swift */,
 				9D153A6827C69A3300E3E3B9 /* skeleton.sks */,
-				46B3553327C9430700C021EB /* map.sks */,
 				2B5DF3E927BABED9003F90F1 /* GameScene.swift */,
 				2B5DF3EB27BABED9003F90F1 /* GameViewController.swift */,
 				2BDBC27B27C2FCF8002BFA5C /* AnalogStick.swift */,
@@ -155,12 +155,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46B3553427C9430B00C021EB /* map.sks in Resources */,
 				2B06534E27BD65A200DAF24F /* MyTileSet.sks in Resources */,
 				2B5DF3EF27BABED9003F90F1 /* Main.storyboard in Resources */,
 				2B5DF3E627BABED9003F90F1 /* GameScene.sks in Resources */,
 				2B5DF3F127BABEDD003F90F1 /* Assets.xcassets in Resources */,
 				46B3553227C6BC9E00C021EB /* Menu.sks in Resources */,
+				46A10A0C27DA6B3F00DA87E3 /* ge.sks in Resources */,
 				9D153A6927C69A3300E3E3B9 /* skeleton.sks in Resources */,
 				2BAD872B27CFD1FF0022A7B6 /* rat.sks in Resources */,
 				2B5DF3F427BABEDD003F90F1 /* LaunchScreen.storyboard in Resources */,
