@@ -14,6 +14,7 @@ class GameScene: SKScene {
     var sk=Skeleton(pos: CGPoint(x: 50,y: 50), siz: CGSize(width: 132,height: 198))
     var menu = SKLabelNode(text: "menu")
     var health = SKLabelNode(text:"Health: 100")
+    var hp=100
     let cam = SKCameraNode()
     var spawnPos : CGPoint?
     var player : SKSpriteNode?
@@ -94,6 +95,8 @@ class GameScene: SKScene {
         if(defaul.float(forKey: "spawny")==0.0){
             defaul.setValue(Float((player?.position.y)!), forKey:  "spawny")
         }
+//        defaul.setValue(Float((0)), forKey:  "spawnx")
+//        defaul.setValue(Float((0)), forKey:  "spawny")
         player!.position=CGPoint(x: CGFloat(defaul.float(forKey: "spawnx")), y: CGFloat(defaul.float(forKey: "spawny")))
         self.camera = cam
         cam.xScale=3
@@ -118,6 +121,7 @@ class GameScene: SKScene {
         health.fontSize = scene!.size.width/19
         health.fontColor = SKColor.white
         health.alpha = 0.8
+        health.text="Health: "+String(hp)
         cam.addChild(health)
         
         cam.addChild(menu)
@@ -378,9 +382,19 @@ class GameScene: SKScene {
             if (i.categoryBitMask==PhysicsCategory.campfire){
                 defaul.setValue(Float((player?.position.x)!), forKey:  "spawnx")
                 defaul.setValue(Float((player?.position.y)!), forKey:  "spawny")
+                if (hp<100){
+                    hp+=1
+                    health.text="Health: "+String(hp)
+                }
+                
             }
             if (i.categoryBitMask==PhysicsCategory.spike){
                 player?.position=CGPoint(x: CGFloat(defaul.float(forKey: "spawnx")), y: CGFloat(defaul.float(forKey: "spawny")))
+                if (hp>0){
+                    hp -= 1
+                    health.text="Health: "+String(hp)
+                }
+                
             }
         }
         //        print(player?.physicsBody?.velocity.dy)
