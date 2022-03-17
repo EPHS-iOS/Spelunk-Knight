@@ -11,10 +11,12 @@ import GameplayKit
 let defaul = UserDefaults.standard
 
 class GameScene: SKScene {
-    var sk=Skeleton(pos: CGPoint(x: 50,y: 50), siz: CGSize(width: 132,height: 198))
+    var sk=Skeleton(pos: CGPoint(x: 2500,y: 50), siz: CGSize(width: 132,height: 198))
     var menu = SKLabelNode(text: "menu")
     var health = SKLabelNode(text:"Health: 100")
-    var hp=100
+    var healthImage : SKSpriteNode?
+    var hp=5
+    var maxHealth=5
     let cam = SKCameraNode()
     var spawnPos : CGPoint?
     var player : SKSpriteNode?
@@ -45,6 +47,7 @@ class GameScene: SKScene {
         static let map : UInt32 = 0b100//3
         static let campfire : UInt32 = 0b11
         static let spike : UInt32 = 0b101
+        static let skeleton : UInt32 = 0b110
         //        static let key : UInt32 = 0b100//4
         //        static let door : UInt32 = 0b101//5
         //        static let mapEdge : UInt32 = 0b110//6
@@ -108,6 +111,9 @@ class GameScene: SKScene {
         tileSize = tileMap?.tileSize
         halfWidth = CGFloat(tileMap!.numberOfColumns) / 2.0 * tileSize!.width
         halfHeight = CGFloat(tileMap!.numberOfRows) / 2.0 * tileSize!.height
+        sk.physicsBody?.categoryBitMask=PhysicsCategory.skeleton
+//        sk.physicsBody?.contactTestBitMask=PhysicsCategory.player
+        sk.physicsBody?.collisionBitMask=PhysicsCategory.map | PhysicsCategory.player
         self.addChild(sk)
         
         menu.position = CGPoint(x:camera!.position.x-(scene!.size.width)/3, y: camera!.position.y+(scene!.size.width)/5)
@@ -116,13 +122,18 @@ class GameScene: SKScene {
         menu.fontColor = SKColor.white
         menu.alpha = 0.8
         
-        health.position = CGPoint(x:camera!.position.x, y: camera!.position.y+(scene!.size.width)/5)
+        health.position = CGPoint(x:camera!.position.x+scene!.size.width/38, y: camera!.position.y+(scene!.size.width)/5)
         health.zPosition = 3
         health.fontSize = scene!.size.width/19
         health.fontColor = SKColor.white
         health.alpha = 0.8
-        health.text="Health: "+String(hp)
+        health.text="x"+String(hp)
         cam.addChild(health)
+        
+        healthImage = SKSpriteNode(texture: SKTexture(imageNamed: "heart"), size: CGSize(width: scene!.size.width/19,height: scene!.size.width/19))
+        healthImage!.zPosition=5
+        healthImage!.position=CGPoint(x: camera!.position.x-scene!.size.width/38/*+((4*(scene!.size.width))/10)*/, y: camera!.position.y+(scene!.size.width)/5+scene!.size.width/38)
+        cam.addChild(healthImage!)
         
         cam.addChild(menu)
         jump.position = CGPoint(x:camera!.position.x+(scene!.size.width)/4, y: camera!.position.y-(scene!.size.width)/5.5)
@@ -234,7 +245,8 @@ class GameScene: SKScene {
                 player?.physicsBody?.angularDamping = 0.1
                 player?.physicsBody?.categoryBitMask=PhysicsCategory.player
                 player?.physicsBody?.collisionBitMask=PhysicsCategory.map
-                player?.physicsBody?.contactTestBitMask=PhysicsCategory.campfire
+                player?.physicsBody?.contactTestBitMask=PhysicsCategory.campfire | PhysicsCategory.skeleton
+//                sk.physicsBody?.collisionBitMask=PhysicsCategory.map | PhysicsCategory.player
                 //                   player?.physicsBody?.velocity.dy=vall!
             }
             if(data.velocity.x>0&&turnedRight==false){
@@ -256,7 +268,8 @@ class GameScene: SKScene {
                 player?.physicsBody?.angularDamping = 0.1
                 player?.physicsBody?.categoryBitMask=PhysicsCategory.player
                 player?.physicsBody?.collisionBitMask=PhysicsCategory.map
-                player?.physicsBody?.contactTestBitMask=PhysicsCategory.campfire
+                player?.physicsBody?.contactTestBitMask=PhysicsCategory.campfire | PhysicsCategory.skeleton
+//                sk.physicsBody?.collisionBitMask=PhysicsCategory.map | PhysicsCategory.player
                 //                   player?.physicsBody?.velocity.dy=vall!
             }
             //   print(atan(data.velocity.y/data.velocity.x))
@@ -382,19 +395,25 @@ class GameScene: SKScene {
             if (i.categoryBitMask==PhysicsCategory.campfire){
                 defaul.setValue(Float((player?.position.x)!), forKey:  "spawnx")
                 defaul.setValue(Float((player?.position.y)!), forKey:  "spawny")
-                if (hp<100){
+                if (hp<maxHealth){
                     hp+=1
-                    health.text="Health: "+String(hp)
+                    health.text="x"+String(hp)
                 }
                 
             }
             if (i.categoryBitMask==PhysicsCategory.spike){
                 player?.position=CGPoint(x: CGFloat(defaul.float(forKey: "spawnx")), y: CGFloat(defaul.float(forKey: "spawny")))
+//                if (hp>0){
+//                    hp -= 1
+//                    health.text="x"+String(hp)
+//                }
+                hp=5
+            }
+            if (i.categoryBitMask==PhysicsCategory.skeleton){
                 if (hp>0){
                     hp -= 1
-                    health.text="Health: "+String(hp)
+                    health.text="x"+String(hp)
                 }
-                
             }
         }
         //        print(player?.physicsBody?.velocity.dy)
