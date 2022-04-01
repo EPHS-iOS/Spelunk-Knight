@@ -25,6 +25,7 @@ struct PhysicsCategory {
     //        static let laser : UInt32 = 0b1000//8
 }
 class GameScene: SKScene {
+    var door : SKNode?
     var sk=Skeleton(pos: CGPoint(x: 500,y: 300), siz: CGSize(width: 132,height: 198))
     var menu = SKLabelNode(text: "menu")
     var health = SKLabelNode(text:"Health: 100")
@@ -89,6 +90,7 @@ class GameScene: SKScene {
             node.isPaused=false
             node.physicsBody?.velocity.dx=self.skelV
         }
+        
         view.isMultipleTouchEnabled=true
         setupJoystick()
         player = childNode(withName: "player") as?SKSpriteNode
@@ -137,7 +139,12 @@ class GameScene: SKScene {
         health.alpha = 0.8
         health.text="x"+String(hp)
         cam.addChild(health)
-        
+        scene!.enumerateChildNodes(withName: "door 1") {
+            (node, stop) in
+   
+            self.door=node
+           
+        }
         healthImage = SKSpriteNode(texture: SKTexture(imageNamed: "heart"), size: CGSize(width: scene!.size.width/19,height: scene!.size.width/19))
         healthImage!.zPosition=5
         healthImage!.position=CGPoint(x: camera!.position.x-scene!.size.width/38/*+((4*(scene!.size.width))/10)*/, y: camera!.position.y+(scene!.size.width)/5+scene!.size.width/38)
@@ -492,6 +499,23 @@ playerAttackingLeft(player:player!)
             canJump = true
         }else{
             canJump = false
+        }
+        if(player!.frame.intersects(door!.frame)==true){
+            if let view = self.view {
+                // Load the SKScene from 'GameScene.sks'
+                if let scene = SKScene(fileNamed: "ge") {
+                    // Set the scale mode to scale to fit the window
+                    scene.scaleMode = .aspectFit
+                    
+                    // Present the scene
+                    view.presentScene(scene)
+                }
+                view.showsPhysics = true
+                view.ignoresSiblingOrder = true
+                
+                view.showsFPS = true
+                view.showsNodeCount = true //hi
+            }
         }
         
         skelTimer+=1
