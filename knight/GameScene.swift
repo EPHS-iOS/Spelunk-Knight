@@ -9,17 +9,34 @@
 import SpriteKit
 import GameplayKit
 let defaul = UserDefaults.standard
-
+struct PhysicsCategory {
+    static let none      : UInt32 = 0
+    static let all       : UInt32 = UInt32.max
+    //      static let bullet   : UInt32 = 0b1       // 1
+    static let player : UInt32 = 0b10//2
+    static let map : UInt32 = 0b100//3
+    static let campfire : UInt32 = 0b11
+    static let spike : UInt32 = 0b101
+    static let skeleton : UInt32 = 0b110
+    //        static let key : UInt32 = 0b100//4
+    //        static let door : UInt32 = 0b101//5
+    //        static let mapEdge : UInt32 = 0b110//6
+    //        static let saw : UInt32 = 0b111//7
+    //        static let laser : UInt32 = 0b1000//8
+}
 class GameScene: SKScene {
-    var sk=Skeleton(pos: CGPoint(x: 2500,y: 50), siz: CGSize(width: 132,height: 198))
+    var sk=Skeleton(pos: CGPoint(x: 500,y: 300), siz: CGSize(width: 132,height: 198))
     var menu = SKLabelNode(text: "menu")
     var health = SKLabelNode(text:"Health: 100")
     var healthImage : SKSpriteNode?
-    var hp=5
-    var maxHealth=5
+    var hp = 300
+    var maxHealth=300
+    var isAttacking : Bool?
     let cam = SKCameraNode()
     var spawnPos : CGPoint?
     var player : SKSpriteNode?
+    var left : SKSpriteNode?
+    var right : SKSpriteNode?
     var tileMap : SKTileMapNode?
     var tileSize : CGSize?
     var fallingVelocity:CGFloat?
@@ -39,21 +56,7 @@ class GameScene: SKScene {
     let ju: CGFloat = 950
     var x : CGFloat?
     var y : CGFloat?
-    struct PhysicsCategory {
-        static let none      : UInt32 = 0
-        static let all       : UInt32 = UInt32.max
-        //      static let bullet   : UInt32 = 0b1       // 1
-        static let player : UInt32 = 0b10//2
-        static let map : UInt32 = 0b100//3
-        static let campfire : UInt32 = 0b11
-        static let spike : UInt32 = 0b101
-        static let skeleton : UInt32 = 0b110
-        //        static let key : UInt32 = 0b100//4
-        //        static let door : UInt32 = 0b101//5
-        //        static let mapEdge : UInt32 = 0b110//6
-        //        static let saw : UInt32 = 0b111//7
-        //        static let laser : UInt32 = 0b1000//8
-    }
+
     lazy var analogJoystick: AnalogJoystick = {
         scene?.view?.showsPhysics = false
         let js = AnalogJoystick(diameter: scene!.size.width/6, colors: nil, images: (substrate: #imageLiteral(resourceName: "jSubstrate"), stick: #imageLiteral(resourceName: "jStick")))
@@ -64,6 +67,7 @@ class GameScene: SKScene {
         return js
     }()
     override func didMove(to view: SKView) {
+        isAttacking = false
         turnedLeft = false
         turnedRight = false
         if(turnedLeft == false && turnedRight == false){
@@ -90,7 +94,7 @@ class GameScene: SKScene {
         player = childNode(withName: "player") as?SKSpriteNode
         player?.physicsBody?.categoryBitMask=PhysicsCategory.player
         player?.physicsBody?.restitution = 0.0
-        player?.physicsBody?.collisionBitMask=PhysicsCategory.map
+        player?.physicsBody?.contactTestBitMask = PhysicsCategory.skeleton
 
         if(defaul.float(forKey: "spawnx")==0.0){
             defaul.setValue(Float((player?.position.x)!), forKey:  "spawnx")
@@ -98,22 +102,26 @@ class GameScene: SKScene {
         if(defaul.float(forKey: "spawny")==0.0){
             defaul.setValue(Float((player?.position.y)!), forKey:  "spawny")
         }
-//        defaul.setValue(Float((0)), forKey:  "spawnx")
-//        defaul.setValue(Float((0)), forKey:  "spawny")
+       defaul.setValue(Float((0)), forKey:  "spawnx")
+        defaul.setValue(Float((0)), forKey:  "spawny")
         player!.position=CGPoint(x: CGFloat(defaul.float(forKey: "spawnx")), y: CGFloat(defaul.float(forKey: "spawny")))
         self.camera = cam
+      
         cam.xScale=3
         cam.yScale=3
         self.addChild(cam)
+        
         let constraint = SKConstraint.distance(SKRange(constantValue: 0), to: player!)
-        camera!.constraints = [ constraint ]
+       
+        camera!.constraints = [constraint]
+        
         tileMap = (self.childNode(withName: "Tile Map Node") as? SKTileMapNode)!
         tileSize = tileMap?.tileSize
         halfWidth = CGFloat(tileMap!.numberOfColumns) / 2.0 * tileSize!.width
         halfHeight = CGFloat(tileMap!.numberOfRows) / 2.0 * tileSize!.height
         sk.physicsBody?.categoryBitMask=PhysicsCategory.skeleton
 //        sk.physicsBody?.contactTestBitMask=PhysicsCategory.player
-        sk.physicsBody?.collisionBitMask=PhysicsCategory.map | PhysicsCategory.player
+        sk.physicsBody?.contactTestBitMask = PhysicsCategory.player
         self.addChild(sk)
         
         menu.position = CGPoint(x:camera!.position.x-(scene!.size.width)/3, y: camera!.position.y+(scene!.size.width)/5)
@@ -136,6 +144,8 @@ class GameScene: SKScene {
         cam.addChild(healthImage!)
         
         cam.addChild(menu)
+//        cam.addChild(left!)
+//        cam.addChild(right!)
         jump.position = CGPoint(x:camera!.position.x+(scene!.size.width)/4, y: camera!.position.y-(scene!.size.width)/5.5)
         jump.zPosition = 3
         jump.size=CGSize(width:scene!.size.width/7,height:scene!.size.width/6)
@@ -245,7 +255,7 @@ class GameScene: SKScene {
                 player?.physicsBody?.angularDamping = 0.1
                 player?.physicsBody?.categoryBitMask=PhysicsCategory.player
                 player?.physicsBody?.collisionBitMask=PhysicsCategory.map
-                player?.physicsBody?.contactTestBitMask=PhysicsCategory.campfire | PhysicsCategory.skeleton
+//                player?.physicsBody?.contactTestBitMask=PhysicsCategory.campfire | PhysicsCategory.skeleton
 //                sk.physicsBody?.collisionBitMask=PhysicsCategory.map | PhysicsCategory.player
                 //                   player?.physicsBody?.velocity.dy=vall!
             }
@@ -268,7 +278,7 @@ class GameScene: SKScene {
                 player?.physicsBody?.angularDamping = 0.1
                 player?.physicsBody?.categoryBitMask=PhysicsCategory.player
                 player?.physicsBody?.collisionBitMask=PhysicsCategory.map
-                player?.physicsBody?.contactTestBitMask=PhysicsCategory.campfire | PhysicsCategory.skeleton
+//                player?.physicsBody?.contactTestBitMask=PhysicsCategory.campfire | PhysicsCategory.skeleton
 //                sk.physicsBody?.collisionBitMask=PhysicsCategory.map | PhysicsCategory.player
                 //                   player?.physicsBody?.velocity.dy=vall!
             }
@@ -314,9 +324,16 @@ class GameScene: SKScene {
                 player?.physicsBody?.applyImpulse(CGVector(dx: 0, dy: ju))
             }
             if attack.contains(pointOfTouch){
-                player?.isPaused=false
                 playerAttacking(player:player!)
-                                playerAttackingLeft(player:player!)
+playerAttackingLeft(player:player!)
+//                for i in player!.physicsBody!.allContactedBodies(){
+//                    if (i.categoryBitMask==PhysicsCategory.skeleton){
+//
+//                        attackEnemy(enemy: sk)
+//
+//
+//                    }
+//                }
             }
         }
         
@@ -337,23 +354,41 @@ class GameScene: SKScene {
     }
     func playerAttacking(player: SKSpriteNode){
         if(turnedRight==true||noTurn==true){
-            let texture1 = SKTexture(imageNamed: "knightAttack1")
-            let texture2 = SKTexture(imageNamed: "knightAttack2")
-            let texture3 = SKTexture(imageNamed: "knightAttack3")
-            let texture4 = SKTexture(imageNamed: "knightStandard")
-            let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4], timePerFrame: 0.125)
-            player.run(animate, withKey:"attackingRightAction")
-        }
+                 isAttacking=true
+                 let texture1 = SKTexture(imageNamed: "knightAttack1")
+                 let texture2 = SKTexture(imageNamed: "knightAttack2")
+                 let texture3 = SKTexture(imageNamed: "knightAttack3")
+                 let texture4 = SKTexture(imageNamed: "knightStandard")
+                 let actionBlock = SKAction.run({
+                    //print("change")
+                     self.isAttacking = false
+                 })
+                 let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4], timePerFrame: 0.125)
+                 let sequence = SKAction.sequence([animate,actionBlock])
+                 
+                 player.run(sequence, withKey:"attackingRightAction")
+                 
+             
+             }
+
     }
   func playerAttackingLeft(player: SKSpriteNode){
-        if(turnedLeft==true){
-            let texture1 = SKTexture(imageNamed: "knightAttack1Left")
-            let texture2 = SKTexture(imageNamed: "knightAttack2Left")
-            let texture3 = SKTexture(imageNamed: "knightAttack3Left")
-            let texture4 = SKTexture(imageNamed: "knightStandardLeft")
-            let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4], timePerFrame: 0.125)
-            player.run(animate, withKey:"attackingLeftAction")
-        }
+      if(turnedLeft==true){
+                 isAttacking=true
+                 let texture1 = SKTexture(imageNamed: "knightAttack1Left")
+                 let texture2 = SKTexture(imageNamed: "knightAttack2Left")
+                 let texture3 = SKTexture(imageNamed: "knightAttack3Left")
+                 let texture4 = SKTexture(imageNamed: "knightStandardLeft")
+                 let actionBlock = SKAction.run({
+                     //Do what you want here
+                     self.isAttacking = false
+                 })
+                 let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4], timePerFrame: 0.125)
+                 let sequence = SKAction.sequence([animate,actionBlock])
+                 
+                 player.run(sequence, withKey:"attackingLeftAction")
+             }
+
     }
     func playerRunning(player: SKSpriteNode){
         if(turnedRight==true){
@@ -365,6 +400,23 @@ class GameScene: SKScene {
             let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4,texture5], timePerFrame: 0.200)
             
             player.run(SKAction.repeatForever(animate), withKey: "runRight")
+        }
+    }
+    func attackEnemy(enemy: Skeleton){
+        if(enemy.position.x<player!.position.x && turnedLeft==true&&isAttacking==true){
+            enemy.health -= 1
+            print("hit")
+            
+        }
+        if(enemy.position.x>player!.position.x && turnedRight==true&&isAttacking==true){
+            enemy.health -= 1
+            print("hit")
+         
+        }
+        if(enemy.health == 0){
+          
+           enemy.removeFromParent()
+           
         }
     }
     func playerRunningLeft(player: SKSpriteNode){
@@ -380,17 +432,28 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        if(analogJoystick.stick.position.x==0.0){
-                 player?.isPaused=true
-                 player?.texture = SKTexture(imageNamed: "knightStandard")
-               //  player?.isPaused = false
+        if(analogJoystick.stick.position.x==0.0&&isAttacking==false){
+                noTurn = true
+                let texture1 = SKTexture(imageNamed: "knightStandard")
+                player!.run(SKAction.animate(with:[texture1], timePerFrame:0.1))
+                     player?.texture = SKTexture(imageNamed: "knightStandard")
                 
-             }else{
-                 player?.isPaused=false
-             }
+                 }
+        
              
              fallingVelocity=player?.physicsBody?.velocity.dy
+        
         sk.update()
+        if(player!.frame.intersects(sk.frame)){
+            print("hi")
+            if (hp>0&&sk.attacking==true){
+                            hp -= 1
+                            health.text="x"+String(hp)
+                        }
+        
+        
+                        attackEnemy(enemy: sk)
+        }
         for i in player!.physicsBody!.allContactedBodies(){
             if (i.categoryBitMask==PhysicsCategory.campfire){
                 defaul.setValue(Float((player?.position.x)!), forKey:  "spawnx")
@@ -409,12 +472,18 @@ class GameScene: SKScene {
 //                }
                 hp=5
             }
-            if (i.categoryBitMask==PhysicsCategory.skeleton){
-                if (hp>0){
-                    hp -= 1
-                    health.text="x"+String(hp)
-                }
-            }
+//            if (i.categoryBitMask==PhysicsCategory.skeleton){
+//                print("hi")
+//                if (hp>0){
+//                    hp -= 1
+//                    health.text="x"+String(hp)
+//                }
+//
+//
+//                attackEnemy(enemy: sk)
+//
+//
+//            }
         }
         //        print(player?.physicsBody?.velocity.dy)
         

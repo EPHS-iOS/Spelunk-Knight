@@ -11,6 +11,7 @@ import SpriteKit
 class Skeleton: SKSpriteNode{
     var prevX:CGFloat
     var sp=CGFloat(3)
+    var health = 45
     var sizee:CGSize
     var walkSprites :[SKTexture] = [SKTexture]()
     var attackSprites :[SKTexture] = [SKTexture]()
@@ -96,6 +97,7 @@ class Skeleton: SKSpriteNode{
 //                self.physicsBody=SKPhysicsBody(texture: walkSprites[1], alphaThreshold: 0.5, size: sizee)
                 self.physicsBody=SKPhysicsBody(rectangleOf: sizee)
                 self.physicsBody?.allowsRotation=false
+                self.physicsBody?.contactTestBitMask=PhysicsCategory.player
             }
             self.texture=attackSprites[Int((attackTimer-100)/3)]
             if (Int((attackTimer-100)/3)>=17){
@@ -103,6 +105,9 @@ class Skeleton: SKSpriteNode{
                 attackTimer=0
             }
         }
+        self.physicsBody?.categoryBitMask=PhysicsCategory.skeleton
+//        sk.physicsBody?.contactTestBitMask=PhysicsCategory.player
+        self.physicsBody?.contactTestBitMask = PhysicsCategory.player
         //        print(Int(position.x))
         
     }

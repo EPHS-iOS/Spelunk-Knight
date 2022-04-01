@@ -34,7 +34,7 @@ class Menu: SKScene {
             if ((startLabel?.contains(pointOfTouch)) != nil){
                 if let view = self.view {
                     // Load the SKScene from 'GameScene.sks'
-                    if let scene = SKScene(fileNamed: "ge") {
+                    if let scene = SKScene(fileNamed: "GameScene") {
                         // Set the scale mode to scale to fit the window
                         scene.scaleMode = .aspectFit
                         
