@@ -97,15 +97,16 @@ class GameScene: SKScene {
         player?.physicsBody?.categoryBitMask=PhysicsCategory.player
         player?.physicsBody?.restitution = 0.0
         player?.physicsBody?.contactTestBitMask = PhysicsCategory.skeleton
-
+        //reset spawn:
+        defaul.setValue(Float((0)), forKey:  "spawnx")
+        defaul.setValue(Float((0)), forKey:  "spawny")
         if(defaul.float(forKey: "spawnx")==0.0){
             defaul.setValue(Float((player?.position.x)!), forKey:  "spawnx")
         }
         if(defaul.float(forKey: "spawny")==0.0){
             defaul.setValue(Float((player?.position.y)!), forKey:  "spawny")
         }
-       defaul.setValue(Float((0)), forKey:  "spawnx")
-        defaul.setValue(Float((0)), forKey:  "spawny")
+       
         player!.position=CGPoint(x: CGFloat(defaul.float(forKey: "spawnx")), y: CGFloat(defaul.float(forKey: "spawny")))
         self.camera = cam
       
