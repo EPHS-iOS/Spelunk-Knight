@@ -98,8 +98,8 @@ class GameScene: SKScene {
         player?.physicsBody?.restitution = 0.0
         player?.physicsBody?.contactTestBitMask = PhysicsCategory.skeleton
         //reset spawn:
-        defaul.setValue(Float((0)), forKey:  "spawnx")
-        defaul.setValue(Float((0)), forKey:  "spawny")
+//        defaul.setValue(Float((0)), forKey:  "spawnx")
+//        defaul.setValue(Float((0)), forKey:  "spawny")
         if(defaul.float(forKey: "spawnx")==0.0){
             defaul.setValue(Float((player?.position.x)!), forKey:  "spawnx")
         }
@@ -501,21 +501,24 @@ playerAttackingLeft(player:player!)
         }else{
             canJump = false
         }
-        if(player!.frame.intersects(door!.frame)==true){
-            if let view = self.view {
-                // Load the SKScene from 'GameScene.sks'
-                if let scene = SKScene(fileNamed: "ge") {
-                    // Set the scale mode to scale to fit the window
-                    scene.scaleMode = .aspectFit
+        if (door != nil){
+            if(player!.frame.intersects(door!.frame)==true){
+                if let view = self.view {
+                    analogJoystick.disabled=true
+                    // Load the SKScene from 'GameScene.sks'
+                    if let scene = SKScene(fileNamed: "ge") {
+                        // Set the scale mode to scale to fit the window
+                        scene.scaleMode = .aspectFit
+                        
+                        // Present the scene
+                        view.presentScene(scene)
+                    }
+                    view.showsPhysics = true
+                    view.ignoresSiblingOrder = true
                     
-                    // Present the scene
-                    view.presentScene(scene)
+                    view.showsFPS = true
+                    view.showsNodeCount = true //hi
                 }
-                view.showsPhysics = true
-                view.ignoresSiblingOrder = true
-                
-                view.showsFPS = true
-                view.showsNodeCount = true //hi
             }
         }
         
