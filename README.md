@@ -5,7 +5,9 @@ Knight is a metrovania game-in-progress. The end goal is an open world with vari
 
 
 Version 1.0 build 1:
+
 Basic setup of game including joystick movement for player, tilemap node for map, attack animation, and enemies such as skeletons and rats. 
 
 Version 1.0 build 2: 
+
 Expanded map, improved movement, skeleton attack animation, player movement and attack animations, player and skeleton health, spikes, save points, new tile assets. Teleportation to the next stage of the map is not working yet. 
