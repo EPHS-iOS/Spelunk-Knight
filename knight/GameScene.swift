@@ -90,7 +90,7 @@ class GameScene: SKScene {
             node.isPaused=false
             node.physicsBody?.velocity.dx=self.skelV
         }
-        
+//        print("spawnx"+(self.view?.scene?.name)!)
         view.isMultipleTouchEnabled=true
         setupJoystick()
         player = childNode(withName: "player") as?SKSpriteNode
@@ -98,16 +98,16 @@ class GameScene: SKScene {
         player?.physicsBody?.restitution = 0.0
         player?.physicsBody?.contactTestBitMask = PhysicsCategory.skeleton
         //reset spawn:
-//        defaul.setValue(Float((0)), forKey:  "spawnx")
-//        defaul.setValue(Float((0)), forKey:  "spawny")
-        if(defaul.float(forKey: "spawnx")==0.0){
-            defaul.setValue(Float((player?.position.x)!), forKey:  "spawnx")
+//        defaul.setValue(Float((0)), forKey:  "spawnx"+(self.view?.scene?.name)!)
+//        defaul.setValue(Float((0)), forKey:  "spawny"+(self.view?.scene?.name)!)
+        if(defaul.float(forKey: "spawnx"+(self.view?.scene?.name)!)==0.0){
+            defaul.setValue(Float((player?.position.x)!), forKey:  "spawnx"+(self.view?.scene?.name)!)
         }
-        if(defaul.float(forKey: "spawny")==0.0){
-            defaul.setValue(Float((player?.position.y)!), forKey:  "spawny")
+        if(defaul.float(forKey: "spawny"+(self.view?.scene?.name)!)==0.0){
+            defaul.setValue(Float((player?.position.y)!), forKey:  "spawny"+(self.view?.scene?.name)!)
         }
        
-        player!.position=CGPoint(x: CGFloat(defaul.float(forKey: "spawnx")), y: CGFloat(defaul.float(forKey: "spawny")))
+        player!.position=CGPoint(x: CGFloat(defaul.float(forKey: "spawnx"+(self.view?.scene?.name)!)), y: CGFloat(defaul.float(forKey: "spawny"+(self.view?.scene?.name)!)))
         self.camera = cam
       
         cam.xScale=3
@@ -464,8 +464,8 @@ playerAttackingLeft(player:player!)
         }
         for i in player!.physicsBody!.allContactedBodies(){
             if (i.categoryBitMask==PhysicsCategory.campfire){
-                defaul.setValue(Float((player?.position.x)!), forKey:  "spawnx")
-                defaul.setValue(Float((player?.position.y)!), forKey:  "spawny")
+                defaul.setValue(Float((player?.position.x)!), forKey:  "spawnx"+(self.view?.scene?.name)!)
+                defaul.setValue(Float((player?.position.y)!), forKey:  "spawny"+(self.view?.scene?.name)!)
                 if (hp<maxHealth){
                     hp+=1
                     health.text="x"+String(hp)
@@ -473,7 +473,7 @@ playerAttackingLeft(player:player!)
                 
             }
             if (i.categoryBitMask==PhysicsCategory.spike){
-                player?.position=CGPoint(x: CGFloat(defaul.float(forKey: "spawnx")), y: CGFloat(defaul.float(forKey: "spawny")))
+                player?.position=CGPoint(x: CGFloat(defaul.float(forKey: "spawnx"+(self.view?.scene?.name)!)), y: CGFloat(defaul.float(forKey: "spawny"+(self.view?.scene?.name)!)))
 //                if (hp>0){
 //                    hp -= 1
 //                    health.text="x"+String(hp)
