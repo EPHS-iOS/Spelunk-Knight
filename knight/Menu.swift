@@ -30,11 +30,13 @@ class Menu: SKScene {
         
         for touch: AnyObject in touches{
             let pointOfTouch = touch.location(in: self)
-            
             if ((startLabel?.contains(pointOfTouch)) != nil){
                 if let view = self.view {
                     // Load the SKScene from 'GameScene.sks'
-                    if let scene = SKScene(fileNamed: "GameScene") {
+                    if (defaul.string(forKey: "scene") == nil){
+                        defaul.setValue("GameScene", forKey: "scene")
+                    }
+                    if let scene = SKScene(fileNamed: defaul.string(forKey: "scene")!) {
                         // Set the scale mode to scale to fit the window
                         scene.scaleMode = .aspectFit
                         
