@@ -140,7 +140,7 @@ class GameScene: SKScene {
         health.alpha = 0.8
         health.text="x"+String(hp)
         cam.addChild(health)
-        scene!.enumerateChildNodes(withName: "door 1") {
+        scene!.enumerateChildNodes(withName: "door") {
             (node, stop) in
    
             self.door=node
@@ -504,21 +504,43 @@ playerAttackingLeft(player:player!)
         if (door != nil){
             if(player!.frame.intersects(door!.frame)==true){
                 if let view = self.view {
-                    analogJoystick.disabled=true
-                    // Load the SKScene from 'GameScene.sks'
-                    defaul.setValue("ge", forKey: "scene")
-                    if let scene = SKScene(fileNamed: "ge") {
-                        // Set the scale mode to scale to fit the window
-                        scene.scaleMode = .aspectFit
+                    if self.view?.scene!.name=="GameScene"{
+                        analogJoystick.disabled=true
+                        // Load the SKScene from 'GameScene.sks'
+                        defaul.setValue(Float((0)), forKey:  "spawnx"+"ge")
+                        defaul.setValue(Float((0)), forKey:  "spawny"+"ge")
+                        defaul.setValue("ge", forKey: "scene")
+                        if let scene = SKScene(fileNamed: "ge") {
+                            // Set the scale mode to scale to fit the window
+                            scene.scaleMode = .aspectFit
+                            
+                            // Present the scene
+                            view.presentScene(scene)
+                        }
+                        view.showsPhysics = false
+                        view.ignoresSiblingOrder = true
                         
-                        // Present the scene
-                        view.presentScene(scene)
+                        view.showsFPS = true
+                        view.showsNodeCount = true //hi
+                    } else {
+                        analogJoystick.disabled=true
+                        // Load the SKScene from 'GameScene.sks'
+                        defaul.setValue(Float((0)), forKey:  "spawnx"+"GameScene")
+                        defaul.setValue(Float((0)), forKey:  "spawny"+"GameScene")
+                        defaul.setValue("GameScene", forKey: "scene")
+                        if let scene = SKScene(fileNamed: "GameScene") {
+                            // Set the scale mode to scale to fit the window
+                            scene.scaleMode = .aspectFit
+                            
+                            // Present the scene
+                            view.presentScene(scene)
+                        }
+                        view.showsPhysics = false
+                        view.ignoresSiblingOrder = true
+                        
+                        view.showsFPS = true
+                        view.showsNodeCount = true //hi
                     }
-                    view.showsPhysics = false
-                    view.ignoresSiblingOrder = true
-                    
-                    view.showsFPS = true
-                    view.showsNodeCount = true //hi
                 }
             }
         }

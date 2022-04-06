@@ -33,6 +33,9 @@ class Menu: SKScene {
             if ((startLabel?.contains(pointOfTouch)) != nil){
                 if let view = self.view {
                     // Load the SKScene from 'GameScene.sks'
+                    //reset maps:
+//                    defaul.setValue(nil, forKey: "scene")
+                    
                     if (defaul.string(forKey: "scene") == nil){
                         defaul.setValue("GameScene", forKey: "scene")
                     }
