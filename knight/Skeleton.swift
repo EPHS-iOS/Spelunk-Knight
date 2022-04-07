@@ -18,6 +18,7 @@ class Skeleton: SKSpriteNode{
     var attackTimer = 0
     var i = 0
     var attacking=false
+    var atk=false
     init(pos: CGPoint, siz: CGSize){
         sizee=siz
         walkSprites.append(SKTexture(imageNamed: "s1"))
@@ -89,6 +90,7 @@ class Skeleton: SKSpriteNode{
             prevX=position.x-sp
             if (attackTimer>=100){
                 attacking=true
+                atk=true
             }
         } else {
             self.yScale=37/33
@@ -102,6 +104,7 @@ class Skeleton: SKSpriteNode{
             self.texture=attackSprites[Int((attackTimer-100)/3)]
             if (Int((attackTimer-100)/3)>=17){
                 attacking=false
+                atk=false
                 attackTimer=0
             }
         }
