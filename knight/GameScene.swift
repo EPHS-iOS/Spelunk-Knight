@@ -51,6 +51,7 @@ class GameScene: SKScene {
     var skelV=CGFloat(80)
     let jump = SKSpriteNode(imageNamed: "jumparrowKnight")
     let attack = SKSpriteNode(imageNamed:"jStick")
+    var atk : Bool?
     var skelTimer=0
     var attackSprites :[SKTexture] = [SKTexture]()
     let velocityMultiplier: CGFloat = 0.17
@@ -69,6 +70,7 @@ class GameScene: SKScene {
     }()
     override func didMove(to view: SKView) {
         isAttacking = false
+        atk=false
         turnedLeft = false
         turnedRight = false
         if(turnedLeft == false && turnedRight == false){
@@ -363,6 +365,7 @@ class GameScene: SKScene {
     func playerAttacking(player: SKSpriteNode){
         if(turnedRight==true||noTurn==true){
             isAttacking=true
+            atk=true
             let texture1 = SKTexture(imageNamed: "knightAttack1")
             let texture2 = SKTexture(imageNamed: "knightAttack2")
             let texture3 = SKTexture(imageNamed: "knightAttack3")
@@ -370,6 +373,7 @@ class GameScene: SKScene {
             let actionBlock = SKAction.run({
                 //print("change")
                 self.isAttacking = false
+                self.atk=false
             })
             let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4], timePerFrame: 0.125)
             let sequence = SKAction.sequence([animate,actionBlock])
@@ -383,6 +387,7 @@ class GameScene: SKScene {
     func playerAttackingLeft(player: SKSpriteNode){
         if(turnedLeft==true){
             isAttacking=true
+            atk=true
             let texture1 = SKTexture(imageNamed: "knightAttack1Left")
             let texture2 = SKTexture(imageNamed: "knightAttack2Left")
             let texture3 = SKTexture(imageNamed: "knightAttack3Left")
@@ -390,6 +395,7 @@ class GameScene: SKScene {
             let actionBlock = SKAction.run({
                 //Do what you want here
                 self.isAttacking = false
+                self.atk=false
             })
             let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4], timePerFrame: 0.125)
             let sequence = SKAction.sequence([animate,actionBlock])
@@ -411,15 +417,15 @@ class GameScene: SKScene {
         }
     }
     func attackEnemy(enemy: Skeleton){
-        if(enemy.position.x<player!.position.x && turnedLeft==true&&isAttacking==true){
+        if(enemy.position.x<player!.position.x && turnedLeft==true&&atk==true){
             enemy.health -= 1
-            print("hit")
-            
+//            print("hit")
+            atk=false
         }
-        if(enemy.position.x>player!.position.x && turnedRight==true&&isAttacking==true){
+        if(enemy.position.x>player!.position.x && turnedRight==true&&atk==true){
             enemy.health -= 1
-            print("hit")
-            
+//            print("hit")
+            atk=false
         }
         if(enemy.health == 0){
             
@@ -453,7 +459,7 @@ class GameScene: SKScene {
         
         sk.update()
         if(player!.frame.intersects(sk.frame)){
-            print("hi")
+//            print("hi")
             if (hp>0&&sk.atk==true){
                 hp -= 1
                 health.text="x"+String(hp)

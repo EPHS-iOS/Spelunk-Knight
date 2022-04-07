@@ -11,7 +11,7 @@ import SpriteKit
 class Skeleton: SKSpriteNode{
     var prevX:CGFloat
     var sp=CGFloat(3)
-    var health = 45
+    var health = 3
     var sizee:CGSize
     var walkSprites :[SKTexture] = [SKTexture]()
     var attackSprites :[SKTexture] = [SKTexture]()
@@ -112,7 +112,7 @@ class Skeleton: SKSpriteNode{
 //        sk.physicsBody?.contactTestBitMask=PhysicsCategory.player
         self.physicsBody?.contactTestBitMask = PhysicsCategory.player
         //        print(Int(position.x))
-        
+//        print(health)
     }
     
 }
