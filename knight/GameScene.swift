@@ -26,7 +26,8 @@ struct PhysicsCategory {
 }
 class GameScene: SKScene {
     var door : SKNode?
-    var sk=Skeleton(pos: CGPoint(x: 500,y: 300), siz: CGSize(width: 132,height: 198))
+    
+//    var sk=Skeleton(pos: CGPoint(x: 500,y: 300), siz: CGSize(width: 132,height: 198))
     var menu = SKLabelNode(text: "menu")
     var health = SKLabelNode(text:"Health: 100")
     var healthImage : SKSpriteNode?
@@ -48,6 +49,7 @@ class GameScene: SKScene {
     var canJump : Bool?
     var halfHeight : CGFloat?
     var nodesListGround = [SKShapeNode]()
+    var skeletons = [Skeleton]()
     var skelV=CGFloat(80)
     let jump = SKSpriteNode(imageNamed: "jumparrowKnight")
     let attack = SKSpriteNode(imageNamed:"jStick")
@@ -124,10 +126,8 @@ class GameScene: SKScene {
         tileSize = tileMap?.tileSize
         halfWidth = CGFloat(tileMap!.numberOfColumns) / 2.0 * tileSize!.width
         halfHeight = CGFloat(tileMap!.numberOfRows) / 2.0 * tileSize!.height
-        sk.physicsBody?.categoryBitMask=PhysicsCategory.skeleton
-        //        sk.physicsBody?.contactTestBitMask=PhysicsCategory.player
-        sk.physicsBody?.contactTestBitMask = PhysicsCategory.player
-        self.addChild(sk)
+
+//        self.addChild(sk)
         
         menu.position = CGPoint(x:camera!.position.x-(scene!.size.width)/3, y: camera!.position.y+(scene!.size.width)/5)
         menu.zPosition = 3
@@ -147,6 +147,16 @@ class GameScene: SKScene {
             
             self.door=node
             
+        }
+        
+        scene!.enumerateChildNodes(withName: "skelly") {
+            (node, stop) in
+            self.skeletons.append(Skeleton(pos: node.position, siz: CGSize(width: 132,height: 198)))
+        }
+        for skelly in skeletons{
+            skelly.physicsBody?.categoryBitMask=PhysicsCategory.skeleton
+            skelly.physicsBody?.contactTestBitMask = PhysicsCategory.player
+            self.addChild(skelly)
         }
         healthImage = SKSpriteNode(texture: SKTexture(imageNamed: "heart"), size: CGSize(width: scene!.size.width/19,height: scene!.size.width/19))
         healthImage!.zPosition=5
@@ -456,16 +466,17 @@ class GameScene: SKScene {
         
         
         fallingVelocity=player?.physicsBody?.velocity.dy
-        
-        sk.update()
-        if(player!.frame.intersects(sk.frame)){
-//            print("hi")
-            if (hp>0&&sk.atk==true){
-                hp -= 1
-                health.text="x"+String(hp)
-                sk.atk=false
+        for sk in skeletons{
+            sk.update()
+            if(player!.frame.intersects(sk.frame)){
+                //            print("hi")
+                if (hp>0&&sk.atk==true){
+                    hp -= 1
+                    health.text="x"+String(hp)
+                    sk.atk=false
+                }
+                attackEnemy(enemy: sk)
             }
-            attackEnemy(enemy: sk)
         }
         for i in player!.physicsBody!.allContactedBodies(){
             if (i.categoryBitMask==PhysicsCategory.campfire){
