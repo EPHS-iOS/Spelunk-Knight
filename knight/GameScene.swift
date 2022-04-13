@@ -32,7 +32,7 @@ class GameScene: SKScene {
     var health = SKLabelNode(text:"Health: 100")
     var healthImage : SKSpriteNode?
     var hp = 5
-    var maxHealth=300
+    var maxHealth=5
     var isAttacking : Bool?
     let cam = SKCameraNode()
     var spawnPos : CGPoint?
