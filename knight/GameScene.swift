@@ -31,7 +31,7 @@ class GameScene: SKScene {
     var menu = SKLabelNode(text: "menu")
     var health = SKLabelNode(text:"Health: 100")
     var healthImage : SKSpriteNode?
-    var hp = 5
+    var hp = defaul.integer(forKey: "hp")
     var maxHealth=5
     var isAttacking : Bool?
     let cam = SKCameraNode()
@@ -71,6 +71,9 @@ class GameScene: SKScene {
         return js
     }()
     override func didMove(to view: SKView) {
+        if hp == 0{
+            hp = 5
+        }
         isAttacking = false
         atk=false
         turnedLeft = false
@@ -456,6 +459,7 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        defaul.setValue(hp, forKey: "hp")
         if(analogJoystick.stick.position.x==0.0&&isAttacking==false){
             noTurn = true
             let texture1 = SKTexture(imageNamed: "knightStandard")
@@ -602,7 +606,6 @@ class GameScene: SKScene {
                 } else {
                     node.xScale = -1
                 }
-                
             }
         }
     }
