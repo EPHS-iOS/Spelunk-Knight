@@ -105,8 +105,8 @@ class GameScene: SKScene {
         player?.physicsBody?.restitution = 0.0
         player?.physicsBody?.contactTestBitMask = PhysicsCategory.skeleton
         //reset spawn:
-        //        defaul.setValue(Float((0)), forKey:  "spawnx"+(self.view?.scene?.name)!)
-        //        defaul.setValue(Float((0)), forKey:  "spawny"+(self.view?.scene?.name)!)
+                defaul.setValue(Float((0)), forKey:  "spawnx"+(self.view?.scene?.name)!)
+                defaul.setValue(Float((0)), forKey:  "spawny"+(self.view?.scene?.name)!)
         if(defaul.float(forKey: "spawnx"+(self.view?.scene?.name)!)==0.0){
             defaul.setValue(Float((player?.position.x)!), forKey:  "spawnx"+(self.view?.scene?.name)!)
         }
