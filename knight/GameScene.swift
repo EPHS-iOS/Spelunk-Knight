@@ -471,7 +471,7 @@ class GameScene: SKScene {
             atk=false
         }
         if(enemy.health == 0){
-            
+            enemy.position.x-=10000
             enemy.removeFromParent()
             
         }
@@ -505,10 +505,12 @@ class GameScene: SKScene {
             sk.update()
             if(player!.frame.intersects(sk.frame)){
                 //            print("hi")
-                if (hp>0&&sk.atk==true){
-                    hp -= 1
-                    health.text="x"+String(hp)
-                    sk.atk=false
+                if ((((player?.position.x)!<=sk.position.x)&&(sk.xScale == -1))||(((player?.position.x)!>=sk.position.x)&&(sk.xScale==1))){
+                    if (hp>0&&sk.atk==true){
+                        hp -= 1
+                        health.text="x"+String(hp)
+                        sk.atk=false
+                    }
                 }
                 attackEnemy(enemy: sk)
             }
