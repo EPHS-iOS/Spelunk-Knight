@@ -18,6 +18,8 @@ struct PhysicsCategory {
     static let campfire : UInt32 = 0b11
     static let spike : UInt32 = 0b101
     static let skeleton : UInt32 = 0b110
+    static let boss : UInt32 = 0b111
+    
     //        static let key : UInt32 = 0b100//4
     //        static let door : UInt32 = 0b101//5
     //        static let mapEdge : UInt32 = 0b110//6
@@ -27,7 +29,7 @@ struct PhysicsCategory {
 class GameScene: SKScene {
     var door : SKNode?
     
-//    var sk=Skeleton(pos: CGPoint(x: 500,y: 300), siz: CGSize(width: 132,height: 198))
+    //    var sk=Skeleton(pos: CGPoint(x: 500,y: 300), siz: CGSize(width: 132,height: 198))
     var menu = SKLabelNode(text: "menu")
     var health = SKLabelNode(text:"Health: 100")
     var healthImage : SKSpriteNode?
@@ -42,6 +44,10 @@ class GameScene: SKScene {
     var tileMap : SKTileMapNode?
     var tileSize : CGSize?
     var fallingVelocity:CGFloat?
+    var firstboss : FirstBoss?
+    var boundLeft : SKNode?
+    var boundRight : SKNode?
+    
     var turnedRight : Bool?
     var turnedLeft : Bool?
     var noTurn : Bool?
@@ -97,6 +103,25 @@ class GameScene: SKScene {
             node.isPaused=false
             node.physicsBody?.velocity.dx=self.skelV
         }
+        scene!.enumerateChildNodes(withName: "leftBound") {
+            (node, stop) in
+            
+            self.boundLeft = node
+            
+        }
+        scene!.enumerateChildNodes(withName: "rightBound") {
+            (node, stop) in
+            
+            self.boundRight = node
+            
+        }
+        scene!.enumerateChildNodes(withName: "boss") {
+                  (node, stop) in
+                  self.firstboss = FirstBoss(pos: node.position, siz: CGSize(width: 180,height: 238),leftnode:self.boundLeft!, rightnode:self.boundRight!)
+      //            self.skeletons.append(Skeleton(pos: node.position, siz: CGSize(width: 132,height: 198)))
+                  
+              }
+        
         //        print("spawnx"+(self.view?.scene?.name)!)
         view.isMultipleTouchEnabled=true
         setupJoystick()
@@ -105,8 +130,8 @@ class GameScene: SKScene {
         player?.physicsBody?.restitution = 0.0
         player?.physicsBody?.contactTestBitMask = PhysicsCategory.skeleton
         //reset spawn:
-                defaul.setValue(Float((0)), forKey:  "spawnx"+(self.view?.scene?.name)!)
-                defaul.setValue(Float((0)), forKey:  "spawny"+(self.view?.scene?.name)!)
+        defaul.setValue(Float((0)), forKey:  "spawnx"+(self.view?.scene?.name)!)
+        defaul.setValue(Float((0)), forKey:  "spawny"+(self.view?.scene?.name)!)
         if(defaul.float(forKey: "spawnx"+(self.view?.scene?.name)!)==0.0){
             defaul.setValue(Float((player?.position.x)!), forKey:  "spawnx"+(self.view?.scene?.name)!)
         }
@@ -129,8 +154,8 @@ class GameScene: SKScene {
         tileSize = tileMap?.tileSize
         halfWidth = CGFloat(tileMap!.numberOfColumns) / 2.0 * tileSize!.width
         halfHeight = CGFloat(tileMap!.numberOfRows) / 2.0 * tileSize!.height
-
-//        self.addChild(sk)
+        
+        //        self.addChild(sk)
         
         menu.position = CGPoint(x:camera!.position.x-(scene!.size.width)/3, y: camera!.position.y+(scene!.size.width)/5)
         menu.zPosition = 3
@@ -151,6 +176,11 @@ class GameScene: SKScene {
             self.door=node
             
         }
+        firstboss?.physicsBody?.categoryBitMask=PhysicsCategory.boss
+               firstboss?.physicsBody?.contactTestBitMask = PhysicsCategory.player
+               self.addChild(firstboss!)
+               
+               
         
         scene!.enumerateChildNodes(withName: "skelly") {
             (node, stop) in
@@ -432,12 +462,12 @@ class GameScene: SKScene {
     func attackEnemy(enemy: Skeleton){
         if(enemy.position.x<player!.position.x && turnedLeft==true&&atk==true){
             enemy.health -= 1
-//            print("hit")
+            //            print("hit")
             atk=false
         }
         if(enemy.position.x>player!.position.x && turnedRight==true&&atk==true){
             enemy.health -= 1
-//            print("hit")
+            //            print("hit")
             atk=false
         }
         if(enemy.health == 0){
@@ -459,6 +489,7 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        firstboss!.update()
         defaul.setValue(hp, forKey: "hp")
         if(analogJoystick.stick.position.x==0.0&&isAttacking==false){
             noTurn = true
