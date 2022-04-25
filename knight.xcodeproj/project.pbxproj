@@ -18,6 +18,7 @@
 		2B5DF3F427BABEDD003F90F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B5DF3F227BABEDD003F90F1 /* LaunchScreen.storyboard */; };
 		2BAD872B27CFD1FF0022A7B6 /* rat.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2BAD872A27CFD1FF0022A7B6 /* rat.sks */; };
 		2BDBC27C27C2FCF8002BFA5C /* AnalogStick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BDBC27B27C2FCF8002BFA5C /* AnalogStick.swift */; };
+		4612345F280725DB00155C73 /* ge2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4612345E280725DB00155C73 /* ge2.sks */; };
 		462F9ECB27FDF453007F0362 /* ge.sks in Resources */ = {isa = PBXBuildFile; fileRef = 462F9ECA27FDF453007F0362 /* ge.sks */; };
 		46B3553027C6BC8600C021EB /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B3552F27C6BC8600C021EB /* Menu.swift */; };
 		46B3553227C6BC9E00C021EB /* Menu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 46B3553127C6BC9E00C021EB /* Menu.sks */; };
@@ -38,6 +39,7 @@
 		2B5DF3F327BABEDD003F90F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2BAD872A27CFD1FF0022A7B6 /* rat.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = rat.sks; sourceTree = "<group>"; };
 		2BDBC27B27C2FCF8002BFA5C /* AnalogStick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalogStick.swift; sourceTree = "<group>"; };
+		4612345E280725DB00155C73 /* ge2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ge2.sks; sourceTree = "<group>"; };
 		462F9ECA27FDF453007F0362 /* ge.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ge.sks; sourceTree = "<group>"; };
 		46B3552F27C6BC8600C021EB /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		46B3553127C6BC9E00C021EB /* Menu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Menu.sks; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 				2BAD872A27CFD1FF0022A7B6 /* rat.sks */,
 				2B5DF3E527BABED9003F90F1 /* GameScene.sks */,
 				462F9ECA27FDF453007F0362 /* ge.sks */,
+				4612345E280725DB00155C73 /* ge2.sks */,
 				9D2D466227D90C2100BDB4E7 /* Skeleton.swift */,
 				9D153A6827C69A3300E3E3B9 /* skeleton.sks */,
 				2B5DF3E927BABED9003F90F1 /* GameScene.swift */,
@@ -161,6 +164,7 @@
 				2B5DF3F127BABEDD003F90F1 /* Assets.xcassets in Resources */,
 				46B3553227C6BC9E00C021EB /* Menu.sks in Resources */,
 				462F9ECB27FDF453007F0362 /* ge.sks in Resources */,
+				4612345F280725DB00155C73 /* ge2.sks in Resources */,
 				9D153A6927C69A3300E3E3B9 /* skeleton.sks in Resources */,
 				2BAD872B27CFD1FF0022A7B6 /* rat.sks in Resources */,
 				2B5DF3F427BABEDD003F90F1 /* LaunchScreen.storyboard in Resources */,
@@ -330,7 +334,7 @@
 				CODE_SIGN_ENTITLEMENTS = knight/knight.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 883DK65VTV;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -344,7 +348,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.ephs2022.knight;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
@@ -362,7 +366,7 @@
 				CODE_SIGN_ENTITLEMENTS = knight/knight.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 883DK65VTV;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -376,7 +380,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.ephs2022.knight;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
