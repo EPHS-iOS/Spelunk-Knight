@@ -31,6 +31,7 @@ class GameScene: SKScene {
     
     //    var sk=Skeleton(pos: CGPoint(x: 500,y: 300), siz: CGSize(width: 132,height: 198))
     var menu = SKLabelNode(text: "menu")
+    var timer = Timer()
     var health = SKLabelNode(text:"Health: 100")
     var healthImage : SKSpriteNode?
     var hp = defaul.integer(forKey: "hp")
@@ -77,6 +78,7 @@ class GameScene: SKScene {
         return js
     }()
     override func didMove(to view: SKView) {
+        let timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(fire), userInfo: nil, repeats: true)
         if hp == 0{
             hp = 5
         }
@@ -281,6 +283,20 @@ class GameScene: SKScene {
             }
         }
     }
+    @objc func fire()
+    {
+        let randomInt = Int.random(in: 1..<3)
+        if(randomInt==1){
+        firstboss!.attack1()
+        }
+        if(randomInt==2){
+        firstboss!.jump()
+        }
+        if(randomInt==3){
+        firstboss!.attack1()
+        }
+        
+    }
     func setupJoystick() {
         //addChild(analogJoystick)
         //        print(player?.physicsBody?.velocity.dy)
@@ -292,7 +308,8 @@ class GameScene: SKScene {
                 turnedLeft = true
                 turnedRight = false
                 noTurn=false
-                playerRunningLeft(player: player!)
+                playerRunning(player: player!)
+                player?.xScale = -1
                 
                 
                 //  print("changeleft")
@@ -318,6 +335,7 @@ class GameScene: SKScene {
                 turnedLeft = false
                 noTurn=false
                 playerRunning(player: player!)
+                player?.xScale = 1
                 // print("change")
                 //  print("changeleft")
                 
@@ -377,8 +395,11 @@ class GameScene: SKScene {
                 player?.physicsBody?.applyImpulse(CGVector(dx: 0, dy: ju))
             }
             if attack.contains(pointOfTouch){
-                playerAttacking(player:player!)
-                playerAttackingLeft(player:player!)
+                
+                    playerAttacking(player:player!)
+             
+               
+        
                 //                for i in player!.physicsBody!.allContactedBodies(){
                 //                    if (i.categoryBitMask==PhysicsCategory.skeleton){
                 //
@@ -406,7 +427,7 @@ class GameScene: SKScene {
         
     }
     func playerAttacking(player: SKSpriteNode){
-        if(turnedRight==true||noTurn==true){
+      
             isAttacking=true
             atk=true
             let texture1 = SKTexture(imageNamed: "knightAttack1")
@@ -420,35 +441,49 @@ class GameScene: SKScene {
             })
             let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4], timePerFrame: 0.125)
             let sequence = SKAction.sequence([animate,actionBlock])
-            
-            player.run(sequence, withKey:"attackingRightAction")
-            
-            
+        if(turnedRight==true){
+            player.xScale = 1
         }
-        
-    }
-    func playerAttackingLeft(player: SKSpriteNode){
         if(turnedLeft==true){
-            isAttacking=true
-            atk=true
-            let texture1 = SKTexture(imageNamed: "knightAttack1Left")
-            let texture2 = SKTexture(imageNamed: "knightAttack2Left")
-            let texture3 = SKTexture(imageNamed: "knightAttack3Left")
-            let texture4 = SKTexture(imageNamed: "knightStandardLeft")
-            let actionBlock = SKAction.run({
-                //Do what you want here
-                self.isAttacking = false
-                self.atk=false
-            })
-            let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4], timePerFrame: 0.125)
-            let sequence = SKAction.sequence([animate,actionBlock])
-            
-            player.run(sequence, withKey:"attackingLeftAction")
+            print("hididthis")
+            player.xScale = -1
         }
+            
+        player.run(sequence, withKey:"attackingRightAction")
+       
+            
+        
         
     }
+//    func playerAttackingLeft(player: SKSpriteNode){
+//        if(turnedLeft==true){
+//            isAttacking=true
+//            atk=true
+//            let texture1 = SKTexture(imageNamed: "knightAttack1Left")
+//            let texture2 = SKTexture(imageNamed: "knightAttack2Left")
+//            let texture3 = SKTexture(imageNamed: "knightAttack3Left")
+//            let texture4 = SKTexture(imageNamed: "knightStandardLeft")
+//            let actionBlock = SKAction.run({
+//                //Do what you want here
+//                self.isAttacking = false
+//                self.atk=false
+//            })
+//            let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4], timePerFrame: 0.125)
+//            let sequence = SKAction.sequence([animate,actionBlock])
+//
+//            player.run(sequence, withKey:"attackingLeftAction")
+//        }
+//
+//    }
     func playerRunning(player: SKSpriteNode){
         if(turnedRight==true){
+            player.xScale = 1
+        }
+        if(turnedLeft==true){
+            print("hididthis")
+            player.xScale = -1
+        }
+        
             let texture1 = SKTexture(imageNamed: "knightRun1")
             let texture2 = SKTexture(imageNamed: "knightRun2")
             let texture3 = SKTexture(imageNamed: "knightRun3")
@@ -457,9 +492,27 @@ class GameScene: SKScene {
             let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4,texture5,texture4, texture3, texture2], timePerFrame: 0.200)
             
             player.run(SKAction.repeatForever(animate), withKey: "runRight")
-        }
+           
+        
     }
     func attackEnemy(enemy: Skeleton){
+        if(enemy.position.x<player!.position.x && turnedLeft==true&&atk==true){
+            enemy.health -= 1
+            //            print("hit")
+            atk=false
+        }
+        if(enemy.position.x>player!.position.x && turnedRight==true&&atk==true){
+            enemy.health -= 1
+            //            print("hit")
+            atk=false
+        }
+        if(enemy.health == 0){
+            enemy.position.x-=10000
+            enemy.removeFromParent()
+            
+        }
+    }
+    func attackBoss(enemy: FirstBoss){
         if(enemy.position.x<player!.position.x && turnedLeft==true&&atk==true){
             enemy.health -= 1
             //            print("hit")
@@ -489,6 +542,11 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        if(turnedLeft==true && player?.xScale != -1){
+        player?.xScale = -1
+        }
+        print(player!.xScale)
+        //print(turnedLeft)
         firstboss!.update()
         defaul.setValue(hp, forKey: "hp")
         if(analogJoystick.stick.position.x==0.0&&isAttacking==false){
@@ -514,6 +572,17 @@ class GameScene: SKScene {
                 }
                 attackEnemy(enemy: sk)
             }
+        }
+        if(player!.frame.intersects(firstboss!.frame)){
+            if((((player?.position.x)!<=firstboss!.position.x)&&(firstboss!.xScale == -1))||(((player?.position.x)!>=firstboss!.position.x)&&(firstboss!.xScale==1))){
+                if(hp>0&&(firstboss!.isattack2||firstboss!.isattack1)){
+                    hp-=1
+                    health.text="x"+String(hp)
+                    firstboss!.isattack1 = false
+                    firstboss!.isattack2 = false
+                }
+            }
+            attackBoss(enemy: firstboss!)
         }
         for i in player!.physicsBody!.allContactedBodies(){
             if (i.categoryBitMask==PhysicsCategory.campfire){
@@ -597,7 +666,6 @@ class GameScene: SKScene {
                 }
             }
         }
-        
         skelTimer+=1
         scene!.enumerateChildNodes(withName: "//skeleton") {
             (node, stop) in

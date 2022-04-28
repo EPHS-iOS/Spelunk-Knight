@@ -82,10 +82,61 @@ class FirstBoss: SKSpriteNode{
             }
             
         })
-        let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4, texture5, texture6], timePerFrame: 0.125)
+        let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4, texture5, texture6], timePerFrame: 0.1)
         let sequence = SKAction.sequence([animate,actionBlock])
         
         self.run(sequence, withKey:"attackingRightAction")
+        if(self.isleft==true){
+        self.xScale = -1
+        }else{
+            self.xScale = 1
+        }
+        
+    }
+    func attack1Left(){
+        isattack1 = true
+        print("attack1")
+        
+        if let actionR = self.action(forKey: "runningRightBoss") {
+            
+            actionR.speed = 0
+            
+        }
+        
+        if let actionL = self.action(forKey: "runningLeftBoss") {
+            
+            actionL.speed = 0
+            
+        }
+        
+        
+        let texture1 = SKTexture(imageNamed: "attack1_1left")
+        let texture2 = SKTexture(imageNamed: "attack1_2left")
+        let texture3 = SKTexture(imageNamed: "attack1_3left")
+        let texture4 = SKTexture(imageNamed: "attack1_4left")
+        let texture5 = SKTexture(imageNamed: "attack1_5left")
+        let texture6 = SKTexture(imageNamed: "attack1_6left")
+        let actionBlock = SKAction.run({
+            //print("change")
+            self.isattack1 = false
+            if let actionR = self.action(forKey: "runningRightBoss") {
+                
+                actionR.speed = 1
+                
+            }
+            if let actionL = self.action(forKey: "runningLeftBoss") {
+                
+                actionL.speed = 1
+                
+            }
+            
+        })
+        let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4, texture5, texture6], timePerFrame: 0.1)
+        let sequence = SKAction.sequence([animate,actionBlock])
+        
+        self.run(sequence, withKey:"attackingLeftAction")
+        
+        
         
         
     }
@@ -123,9 +174,13 @@ class FirstBoss: SKSpriteNode{
             }
             
         })
-        let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4, texture5, texture6], timePerFrame: 0.125)
+        let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4, texture5, texture6], timePerFrame: 0.1)
         let sequence = SKAction.sequence([animate,actionBlock])
-        
+        if(self.isleft==true){
+        self.xScale = -1
+        }else{
+        self.xScale = 1
+        }
         
     }
     func runRight(){
@@ -136,42 +191,45 @@ class FirstBoss: SKSpriteNode{
         let texture5 = SKTexture(imageNamed: "run_5")
         let texture6 = SKTexture(imageNamed: "run_6")
         
-        let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4, texture5, texture6], timePerFrame: 0.125)
+        let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4, texture5, texture6], timePerFrame: 0.1)
         self.run(SKAction.repeatForever(animate), withKey:"runningRightBoss")
     }
-    func runLeft(){
-        
-        let texture1 = SKTexture(imageNamed: "run_1left")
-        let texture2 = SKTexture(imageNamed: "run_2left")
-        let texture3 = SKTexture(imageNamed: "run_3left")
-        let texture4 = SKTexture(imageNamed: "run_4left")
-        let texture5 = SKTexture(imageNamed: "run_5left")
-        let texture6 = SKTexture(imageNamed: "run_6left")
-        let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4, texture5, texture6], timePerFrame: 0.125)
-        self.run(SKAction.repeatForever(animate), withKey:"runningLeftBoss")
-    }
+//    func runLeft(){
+//
+//        let texture1 = SKTexture(imageNamed: "run_1left")
+//        let texture2 = SKTexture(imageNamed: "run_2left")
+//        let texture3 = SKTexture(imageNamed: "run_3left")
+//        let texture4 = SKTexture(imageNamed: "run_4left")
+//        let texture5 = SKTexture(imageNamed: "run_5left")
+//        let texture6 = SKTexture(imageNamed: "run_6left")
+//        let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4, texture5, texture6], timePerFrame: 0.1)
+//        self.run(SKAction.repeatForever(animate), withKey:"runningLeftBoss")
+//    }
     
     func jump(){
-        self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 980))
+        self.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 2980))
     }
     func update(){
         if(self.frame.intersects(left!.frame)){
             
             runRight()
-            attack1()
-            position.x += 3
+            self.xScale = 1
+            position.x += 15
             isleft=false
+            attack1()
         }
         if(self.frame.intersects(right!.frame)){
             
-            runLeft()
-            position.x -= 3
+            runRight()
+            self.xScale = -1
+            position.x -= 15
             isleft = true
+            attack1()
         }
         if(isleft==false){
-            position.x += 3
+            position.x += 15
         }else{
-            position.x -= 3
+            position.x -= 15
         }
         
         
