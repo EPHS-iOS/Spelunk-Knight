@@ -46,7 +46,7 @@ class Menu: SKScene {
                         // Present the scene
                         view.presentScene(scene)
                     }
-                    view.showsPhysics = false
+                    view.showsPhysics = true
                     view.ignoresSiblingOrder = true
                     
                     view.showsFPS = true

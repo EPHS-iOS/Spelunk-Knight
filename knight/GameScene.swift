@@ -9,6 +9,9 @@
 import SpriteKit
 import GameplayKit
 let defaul = UserDefaults.standard
+var turnedRight : Bool?
+var turnedLeft : Bool?
+var noTurn : Bool?
 struct PhysicsCategory {
     static let none      : UInt32 = 0
     static let all       : UInt32 = UInt32.max
@@ -19,7 +22,7 @@ struct PhysicsCategory {
     static let spike : UInt32 = 0b101
     static let skeleton : UInt32 = 0b110
     static let boss : UInt32 = 0b111
-    
+    static let bullet : UInt32 = 0b1000
     //        static let key : UInt32 = 0b100//4
     //        static let door : UInt32 = 0b101//5
     //        static let mapEdge : UInt32 = 0b110//6
@@ -27,8 +30,10 @@ struct PhysicsCategory {
     //        static let laser : UInt32 = 0b1000//8
 }
 class GameScene: SKScene {
+    var gunEnable=false
     var door : SKNode?
-    
+    var endGameTimerStart=false
+    var endgameTimer=0
     //    var sk=Skeleton(pos: CGPoint(x: 500,y: 300), siz: CGSize(width: 132,height: 198))
     var menu = SKLabelNode(text: "menu")
     var timer = Timer()
@@ -48,18 +53,18 @@ class GameScene: SKScene {
     var firstboss : FirstBoss?
     var boundLeft : SKNode?
     var boundRight : SKNode?
+    var gun: Gun?
     
-    var turnedRight : Bool?
-    var turnedLeft : Bool?
-    var noTurn : Bool?
     var halfWidth : CGFloat?
     var canJump : Bool?
     var halfHeight : CGFloat?
+    var bulletsShot = [Bullet]()
     var nodesListGround = [SKShapeNode]()
     var skeletons = [Skeleton]()
     var skelV=CGFloat(80)
     let jump = SKSpriteNode(imageNamed: "jumparrowKnight")
     let attack = SKSpriteNode(imageNamed:"jStick")
+    let shoot = SKSpriteNode(imageNamed: "jSubstrate")
     var atk : Bool?
     var skelTimer=0
     var attackSprites :[SKTexture] = [SKTexture]()
@@ -78,7 +83,10 @@ class GameScene: SKScene {
         return js
     }()
     override func didMove(to view: SKView) {
+
         let timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(fire), userInfo: nil, repeats: true)
+
+        
         if hp == 0{
             hp = 5
         }
@@ -128,6 +136,10 @@ class GameScene: SKScene {
         view.isMultipleTouchEnabled=true
         setupJoystick()
         player = childNode(withName: "player") as?SKSpriteNode
+        gun=Gun(char: player!)
+        if gunEnable{
+            self.addChild(gun!)
+        }
         player?.physicsBody?.categoryBitMask=PhysicsCategory.player
         player?.physicsBody?.restitution = 0.0
         player?.physicsBody?.contactTestBitMask = PhysicsCategory.skeleton
@@ -211,6 +223,13 @@ class GameScene: SKScene {
         attack.size = CGSize(width:scene!.size.width/15,height:scene!.size.width/15)
         attack.alpha = 1
         cam.addChild(attack)
+        shoot.position = CGPoint(x:camera!.position.x+(scene!.size.width)/2.8, y: camera!.position.y-(scene!.size.width)/4)
+        shoot.zPosition = 3
+        shoot.size = CGSize(width:scene!.size.width/15,height:scene!.size.width/15)
+        shoot.alpha = 1
+        if gunEnable{
+            cam.addChild(shoot)
+        }
         fallingVelocity=player?.physicsBody?.velocity.dy
         for col in 0..<tileMap!.numberOfColumns {
             for row in 0..<tileMap!.numberOfRows {
@@ -379,7 +398,7 @@ class GameScene: SKScene {
                     // Load the SKScene from 'GameScene.sks'
                     if let scene = SKScene(fileNamed: "Menu") {
                         // Set the scale mode to scale to fit the window
-                        scene.scaleMode = .aspectFill
+                        scene.scaleMode = .aspectFit
                         
                         // Present the scene
                         view.presentScene(scene)
@@ -409,6 +428,18 @@ class GameScene: SKScene {
                 //                    }
                 //                }
             }
+            if shoot.contains(pointOfTouch){
+                bulletsShot.append(Bullet(pos: gun!.position))
+                bulletsShot.last?.physicsBody?.isDynamic = false // 2
+                bulletsShot.last?.physicsBody?.categoryBitMask = PhysicsCategory.bullet // 3
+                bulletsShot.last?.physicsBody?.contactTestBitMask = PhysicsCategory.all// 4
+                bulletsShot.last?.physicsBody?.collisionBitMask = PhysicsCategory.all
+                bulletsShot.last?.physicsBody = SKPhysicsBody(texture: (bulletsShot.last?.texture!)!, alphaThreshold: 0.5, size: bulletsShot.last!.size)
+                bulletsShot.last?.physicsBody?.contactTestBitMask = PhysicsCategory.all // 4
+                bulletsShot.last?.physicsBody?.allowsRotation=false
+                bulletsShot.last?.physicsBody?.affectedByGravity=false
+                self.addChild(bulletsShot.last!)
+            }
         }
         
         
@@ -426,6 +457,7 @@ class GameScene: SKScene {
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         
     }
+    
     func playerAttacking(player: SKSpriteNode){
       
             isAttacking=true
@@ -547,6 +579,28 @@ class GameScene: SKScene {
         }
         print(player!.xScale)
         //print(turnedLeft)
+//        print(player?.physicsBody?.allContactedBodies().isEmpty)
+        for b in bulletsShot{
+            b.setPosition(xScale: gun!.xScale)
+//            b.setPosition(xScale: gun?.xScale)
+            for c in b.physicsBody!.allContactedBodies(){
+                if c.node?.physicsBody?.categoryBitMask==PhysicsCategory.skeleton{
+                    for sk in skeletons{
+                        if sk.physicsBody==c{
+                            sk.health-=1
+                        }
+                        if sk.health==0{
+                            c.node?.position.x-=10000
+                            c.node?.removeFromParent()
+                        }
+                    }
+                    b.removeFromParent()
+                } else if !(c.node?.physicsBody?.categoryBitMask==PhysicsCategory.player){
+                    b.removeFromParent()
+                }
+            }
+        }
+        gun?.setPosition()
         firstboss!.update()
         defaul.setValue(hp, forKey: "hp")
         if(analogJoystick.stick.position.x==0.0&&isAttacking==false){
@@ -567,6 +621,14 @@ class GameScene: SKScene {
                     if (hp>0&&sk.atk==true){
                         hp -= 1
                         health.text="x"+String(hp)
+                        defaul.setValue(hp, forKey: "hp")
+                        if hp==0{
+                            endGameTimerStart=true
+                            attack.removeFromParent()
+                            shoot.removeFromParent()
+                            analogJoystick.removeFromParent()
+                            jump.removeFromParent()
+                        }
                         sk.atk=false
                     }
                 }
@@ -623,6 +685,27 @@ class GameScene: SKScene {
         }else{
             canJump = false
         }
+        if endGameTimerStart{
+            endgameTimer+=1
+        }
+        if (endgameTimer==50){
+            if let view = self.view {
+                // Load the SKScene from 'GameScene.sks'
+                //reset maps:
+                if let scene = SKScene(fileNamed: "Menu") {
+                    // Set the scale mode to scale to fit the window
+                    scene.scaleMode = .aspectFit
+                    
+                    // Present the scene
+                    view.presentScene(scene)
+                }
+                view.showsPhysics = true
+                view.ignoresSiblingOrder = true
+                
+                view.showsFPS = true
+                view.showsNodeCount = true //hi
+            }
+        }
         if (door != nil){
             if(player!.frame.intersects(door!.frame)==true){
                 if let view = self.view {
@@ -639,7 +722,7 @@ class GameScene: SKScene {
                             // Present the scene
                             view.presentScene(scene)
                         }
-                        view.showsPhysics = false
+                        view.showsPhysics = true
                         view.ignoresSiblingOrder = true
                         
                         view.showsFPS = true
