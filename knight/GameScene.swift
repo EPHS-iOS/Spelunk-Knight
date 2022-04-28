@@ -581,7 +581,7 @@ class GameScene: SKScene {
         //print(turnedLeft)
 //        print(player?.physicsBody?.allContactedBodies().isEmpty)
         for b in bulletsShot{
-            b.setPosition(xScale: gun!.xScale)
+            b.setPosition()
 //            b.setPosition(xScale: gun?.xScale)
             for c in b.physicsBody!.allContactedBodies(){
                 if c.node?.physicsBody?.categoryBitMask==PhysicsCategory.skeleton{
