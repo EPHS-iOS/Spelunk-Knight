@@ -30,7 +30,7 @@ struct PhysicsCategory {
     //        static let laser : UInt32 = 0b1000//8
 }
 class GameScene: SKScene {
-    var gunEnable=false
+    var gunEnable=true
     var door : SKNode?
     var endGameTimerStart=false
     var endgameTimer=0
@@ -304,18 +304,21 @@ class GameScene: SKScene {
     }
     @objc func fire()
     {
-        let randomInt = Int.random(in: 1..<3)
-        if(randomInt==1){
-        firstboss!.attack1()
-        }
-        if(randomInt==2){
-        firstboss!.jump()
-        }
-        if(randomInt==3){
-        firstboss!.attack1()
-        }
         
-    }
+             let randomInt = Int.random(in: 1..<10)
+             if(randomInt<=4){
+             firstboss!.attack1()
+             }
+            
+             if(randomInt==5||randomInt==6){
+             firstboss!.jump()
+             }
+           
+             if(randomInt>6){
+             firstboss!.attack2()
+             }
+             
+         }
     func setupJoystick() {
         //addChild(analogJoystick)
         //        print(player?.physicsBody?.velocity.dy)
@@ -429,7 +432,7 @@ class GameScene: SKScene {
                 //                }
             }
             if shoot.contains(pointOfTouch){
-                bulletsShot.append(Bullet(pos: gun!.position))
+                bulletsShot.append(Bullet(pos: gun!.position, direction: gun!.xScale))
                 bulletsShot.last?.physicsBody?.isDynamic = false // 2
                 bulletsShot.last?.physicsBody?.categoryBitMask = PhysicsCategory.bullet // 3
                 bulletsShot.last?.physicsBody?.contactTestBitMask = PhysicsCategory.all// 4

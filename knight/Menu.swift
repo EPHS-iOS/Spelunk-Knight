@@ -24,6 +24,17 @@ var startLabel: SKLabelNode?
 class Menu: SKScene {
     override func didMove(to view: SKView){
         startLabel = self.childNode(withName: "startLabel") as?SKLabelNode
+        
+        scene!.enumerateChildNodes(withName: "Tile Map Node") {
+            (node, stop) in
+   
+            let actionMove = SKAction.move(to: CGPoint(x: node.position.x-1500, y:node.position.y), duration:TimeInterval(50))
+            let moveDone = SKAction.move(to: CGPoint(x: node.position.x, y:node.position.y), duration:TimeInterval(50))
+            
+            node.run((SKAction.sequence([actionMove,moveDone])))
+   
+           
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
