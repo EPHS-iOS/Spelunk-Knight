@@ -27,6 +27,7 @@
 		9D2D466327D90C2100BDB4E7 /* Skeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2D466227D90C2100BDB4E7 /* Skeleton.swift */; };
 		9D40DFFC2818471A00916600 /* Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D40DFFB2818471A00916600 /* Bullet.swift */; };
 		9D40DFFE2818476F00916600 /* Gun.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D40DFFD2818476F00916600 /* Gun.swift */; };
+		9D40E0002821811400916600 /* Bat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D40DFFF2821811300916600 /* Bat.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		9D34B3E527BEB82C00FC137E /* knight.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = knight.entitlements; sourceTree = "<group>"; };
 		9D40DFFB2818471A00916600 /* Bullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bullet.swift; sourceTree = "<group>"; };
 		9D40DFFD2818476F00916600 /* Gun.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gun.swift; sourceTree = "<group>"; };
+		9D40DFFF2821811300916600 /* Bat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bat.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 				2B3ECAAF28165673007EFBEE /* FirstBoss.swift */,
 				2BDBC27B27C2FCF8002BFA5C /* AnalogStick.swift */,
 				46B3553127C6BC9E00C021EB /* Menu.sks */,
+				9D40DFFF2821811300916600 /* Bat.swift */,
 				46B3552F27C6BC8600C021EB /* Menu.swift */,
 				2B5DF3ED27BABED9003F90F1 /* Main.storyboard */,
 				2B5DF3F027BABEDD003F90F1 /* Assets.xcassets */,
@@ -193,6 +196,7 @@
 				9D2D466327D90C2100BDB4E7 /* Skeleton.swift in Sources */,
 				2BDBC27C27C2FCF8002BFA5C /* AnalogStick.swift in Sources */,
 				2B5DF3EA27BABED9003F90F1 /* GameScene.swift in Sources */,
+				9D40E0002821811400916600 /* Bat.swift in Sources */,
 				2B5DF3EC27BABED9003F90F1 /* GameViewController.swift in Sources */,
 				2B5DF3E427BABED9003F90F1 /* AppDelegate.swift in Sources */,
 				46B3553027C6BC8600C021EB /* Menu.swift in Sources */,
@@ -346,7 +350,7 @@
 				CODE_SIGN_ENTITLEMENTS = knight/knight.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 883DK65VTV;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -378,7 +382,7 @@
 				CODE_SIGN_ENTITLEMENTS = knight/knight.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 883DK65VTV;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

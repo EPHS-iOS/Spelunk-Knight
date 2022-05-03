@@ -46,7 +46,7 @@ class FirstBoss: SKSpriteNode{
     
     func attack1(){
         isattack1 = true
-        print("attack1")
+//        print("attack1")
         
         if let actionR = self.action(forKey: "runningRightBoss") {
             
@@ -95,7 +95,7 @@ class FirstBoss: SKSpriteNode{
     }
     func attack1Left(){
         isattack1 = true
-        print("attack1")
+//        print("attack1")
         
         if let actionR = self.action(forKey: "runningRightBoss") {
             

@@ -24,10 +24,10 @@ class Bullet: SKSpriteNode {
     init(pos: CGPoint,direction: CGFloat ) {
 //        self.id = ID
         // Make a texture from an image, a color, and size
-        let texture = SKTexture(imageNamed: "Gun")
+        let texture = SKTexture(imageNamed: "jSubstrate")
     
         let color = UIColor.clear
-        let size = CGSize(width: 50/**scale*/, height: 50/**scale*/)
+        let size = CGSize(width: 20/**scale*/, height: 20/**scale*/)
             // Call the designated initializer
         super.init(texture: texture, color: color, size: size)
         self.position = pos
@@ -38,7 +38,7 @@ class Bullet: SKSpriteNode {
     func setPosition() {
 //        if (self.shot) {
 //        self.xScale=xScale
-            let x = self.position.x + xScale*10
+            let x = self.position.x + xScale*15
             self.time!+=1
         self.position = CGPoint(x: x, y: self.position.y)
 //        }

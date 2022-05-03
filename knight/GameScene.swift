@@ -23,6 +23,7 @@ struct PhysicsCategory {
     static let skeleton : UInt32 = 0b110
     static let boss : UInt32 = 0b111
     static let bullet : UInt32 = 0b1000
+    static let bat : UInt32 = 0b1001
     //        static let key : UInt32 = 0b100//4
     //        static let door : UInt32 = 0b101//5
     //        static let mapEdge : UInt32 = 0b110//6
@@ -32,6 +33,8 @@ struct PhysicsCategory {
 class GameScene: SKScene {
     var gunEnable=true
     var door : SKNode?
+    var canShoot = true
+    var canShootTimer=0
     var endGameTimerStart=false
     var endgameTimer=0
     //    var sk=Skeleton(pos: CGPoint(x: 500,y: 300), siz: CGSize(width: 132,height: 198))
@@ -61,6 +64,7 @@ class GameScene: SKScene {
     var bulletsShot = [Bullet]()
     var nodesListGround = [SKShapeNode]()
     var skeletons = [Skeleton]()
+    var bats = [Bat]()
     var skelV=CGFloat(80)
     let jump = SKSpriteNode(imageNamed: "jumparrowKnight")
     let attack = SKSpriteNode(imageNamed:"jStick")
@@ -87,7 +91,7 @@ class GameScene: SKScene {
         let timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(fire), userInfo: nil, repeats: true)
 
         
-        if hp == 0{
+        if hp <= 0{
             hp = 5
         }
         isAttacking = false
@@ -204,6 +208,15 @@ class GameScene: SKScene {
             skelly.physicsBody?.categoryBitMask=PhysicsCategory.skeleton
             skelly.physicsBody?.contactTestBitMask = PhysicsCategory.player
             self.addChild(skelly)
+        }
+        scene!.enumerateChildNodes(withName: "bat") {
+            (node, stop) in
+            self.bats.append(Bat(pos: node.position, siz: CGSize(width: 103*1.5,height: 67*1.5)))
+        }
+        for bat in bats {
+            bat.physicsBody?.categoryBitMask=PhysicsCategory.bat
+            bat.physicsBody?.contactTestBitMask = PhysicsCategory.player
+            self.addChild(bat)
         }
         healthImage = SKSpriteNode(texture: SKTexture(imageNamed: "heart"), size: CGSize(width: scene!.size.width/19,height: scene!.size.width/19))
         healthImage!.zPosition=5
@@ -432,16 +445,20 @@ class GameScene: SKScene {
                 //                }
             }
             if shoot.contains(pointOfTouch){
-                bulletsShot.append(Bullet(pos: gun!.position, direction: gun!.xScale))
-                bulletsShot.last?.physicsBody?.isDynamic = false // 2
-                bulletsShot.last?.physicsBody?.categoryBitMask = PhysicsCategory.bullet // 3
-                bulletsShot.last?.physicsBody?.contactTestBitMask = PhysicsCategory.all// 4
-                bulletsShot.last?.physicsBody?.collisionBitMask = PhysicsCategory.all
-                bulletsShot.last?.physicsBody = SKPhysicsBody(texture: (bulletsShot.last?.texture!)!, alphaThreshold: 0.5, size: bulletsShot.last!.size)
-                bulletsShot.last?.physicsBody?.contactTestBitMask = PhysicsCategory.all // 4
-                bulletsShot.last?.physicsBody?.allowsRotation=false
-                bulletsShot.last?.physicsBody?.affectedByGravity=false
-                self.addChild(bulletsShot.last!)
+                
+                if canShoot{
+                    bulletsShot.append(Bullet(pos: CGPoint(x: gun!.position.x+(gun!.xScale*(gun?.size.width)!)/2, y: gun!.position.y+(gun?.size.height)!/2-5), direction: gun!.xScale))
+                    bulletsShot.last?.physicsBody?.isDynamic = false // 2
+                    bulletsShot.last?.physicsBody?.categoryBitMask = PhysicsCategory.bullet // 3
+                    bulletsShot.last?.physicsBody?.contactTestBitMask = PhysicsCategory.all// 4
+                    bulletsShot.last?.physicsBody?.collisionBitMask = PhysicsCategory.all
+                    bulletsShot.last?.physicsBody = SKPhysicsBody(texture: (bulletsShot.last?.texture!)!, alphaThreshold: 0.5, size: bulletsShot.last!.size)
+                    bulletsShot.last?.physicsBody?.contactTestBitMask = PhysicsCategory.all // 4
+                    bulletsShot.last?.physicsBody?.allowsRotation=false
+                    bulletsShot.last?.physicsBody?.affectedByGravity=false
+                    self.addChild(bulletsShot.last!)
+                }
+                canShoot=false
             }
         }
         
@@ -480,7 +497,7 @@ class GameScene: SKScene {
             player.xScale = 1
         }
         if(turnedLeft==true){
-            print("hididthis")
+//            print("hididthis")
             player.xScale = -1
         }
             
@@ -515,7 +532,7 @@ class GameScene: SKScene {
             player.xScale = 1
         }
         if(turnedLeft==true){
-            print("hididthis")
+//            print("hididthis")
             player.xScale = -1
         }
         
@@ -577,10 +594,22 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        if canShoot && shoot.parent==nil{
+            cam.addChild(shoot)
+        } else if !canShoot && !(shoot.parent==nil){
+            shoot.removeFromParent()
+        }
+        if !canShoot{
+            canShootTimer+=1
+            if canShootTimer==40{
+                canShootTimer=0
+                canShoot.toggle()
+            }
+        }
         if(turnedLeft==true && player?.xScale != -1){
         player?.xScale = -1
         }
-        print(player!.xScale)
+//        print(player!.xScale)
         //print(turnedLeft)
 //        print(player?.physicsBody?.allContactedBodies().isEmpty)
         for b in bulletsShot{
@@ -616,6 +645,27 @@ class GameScene: SKScene {
         
         
         fallingVelocity=player?.physicsBody?.velocity.dy
+        for bat in bats{
+            bat.update()
+            for b in bat.physicsBody!.allContactedBodies(){
+                if b.categoryBitMask==PhysicsCategory.player{
+                    bat.sp = -bat.sp
+                    bat.position.x+=2*bat.sp
+                    if hp>0{
+                    hp -= 1
+                    health.text="x"+String(hp)
+                    defaul.setValue(hp, forKey: "hp")
+                    if hp==0{
+                        endGameTimerStart=true
+                        attack.removeFromParent()
+                        shoot.removeFromParent()
+                        analogJoystick.removeFromParent()
+                        jump.removeFromParent()
+                    }
+                    }
+                }
+            }
+        }
         for sk in skeletons{
             sk.update()
             if(player!.frame.intersects(sk.frame)){
