@@ -23,7 +23,7 @@ struct PhysicsCategory {
     static let skeleton : UInt32 = 0b110
     static let boss : UInt32 = 0b111
     static let bullet : UInt32 = 0b1000
-    static let bat : UInt32 = 0b1001
+//    static let bat : UInt32 = 0b1001
     //        static let key : UInt32 = 0b100//4
     //        static let door : UInt32 = 0b101//5
     //        static let mapEdge : UInt32 = 0b110//6
@@ -214,7 +214,7 @@ class GameScene: SKScene {
             self.bats.append(Bat(pos: node.position, siz: CGSize(width: 103*1.5,height: 67*1.5)))
         }
         for bat in bats {
-            bat.physicsBody?.categoryBitMask=PhysicsCategory.bat
+            bat.physicsBody?.categoryBitMask=PhysicsCategory.skeleton
             bat.physicsBody?.contactTestBitMask = PhysicsCategory.player
             self.addChild(bat)
         }
@@ -622,8 +622,21 @@ class GameScene: SKScene {
                             sk.health-=1
                         }
                         if sk.health==0{
-                            c.node?.position.x-=10000
-                            c.node?.removeFromParent()
+//                            c.node?.position.x-=10000
+//                            c.node?.removeFromParent()
+                            sk.position.x-=10000
+                            sk.removeFromParent()
+                        }
+                    }
+                    for bat in bats {
+                        if bat.physicsBody==c{
+                            bat.health-=1
+                        }
+                        if bat.health==0{
+//                            c.node?.position.x-=10000
+//                            c.node?.removeFromParent()
+                            bat.position.x-=10000
+                            bat.removeFromParent()
                         }
                     }
                     b.removeFromParent()
