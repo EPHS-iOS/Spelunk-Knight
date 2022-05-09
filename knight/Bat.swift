@@ -63,14 +63,14 @@ class Bat: SKSpriteNode{
         if(playercontact==false){
             position.x += sp
             prevX=position.x-sp
-        self.physicsBody?.categoryBitMask=PhysicsCategory.skeleton
+        
         }else{
             print("bathere")
             position.x += 0
             prevX=position.x-sp
             
         }
-        self.physicsBody?.categoryBitMask=PhysicsCategory.bat
+        self.physicsBody?.categoryBitMask=PhysicsCategory.skeleton
 //        sk.physicsBody?.contactTestBitMask=PhysicsCategory.player
         self.physicsBody?.contactTestBitMask = PhysicsCategory.player
         //        print(Int(position.x))
