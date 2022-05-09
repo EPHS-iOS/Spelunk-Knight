@@ -190,7 +190,11 @@ class FirstBoss: SKSpriteNode{
         let texture4 = SKTexture(imageNamed: "run_4")
         let texture5 = SKTexture(imageNamed: "run_5")
         let texture6 = SKTexture(imageNamed: "run_6")
-        
+        if(isleft==true){
+            self.xScale-=1
+        }else{
+            self.xScale = 1
+        }
         let animate = SKAction.animate(with: [texture1, texture2, texture3, texture4, texture5, texture6], timePerFrame: 0.1)
         self.run(SKAction.repeatForever(animate), withKey:"runningRightBoss")
     }
