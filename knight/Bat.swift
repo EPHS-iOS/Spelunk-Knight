@@ -11,6 +11,7 @@ import SpriteKit
 class Bat: SKSpriteNode{
     var prevX:CGFloat
     var sp=CGFloat(6)
+    var playercontact = false
     var health = 1
     var sizee:CGSize
     var flySprites :[SKTexture] = [SKTexture]()
@@ -34,7 +35,7 @@ class Bat: SKSpriteNode{
         physicsBody?.allowsRotation=false
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -51,7 +52,7 @@ class Bat: SKSpriteNode{
 //                self.physicsBody?.allowsRotation=false
 //            }
             self.i += 1
-            if (Int(prevX)==Int(position.x)){
+            if (Int(prevX)==Int(position.x)&&playercontact==false){
                 sp = -sp
                 xScale = -xScale
             }
@@ -59,14 +60,24 @@ class Bat: SKSpriteNode{
             if (self.i>=27){
                 i=0
             }
+        if(playercontact==false){
             position.x += sp
             prevX=position.x-sp
         self.physicsBody?.categoryBitMask=PhysicsCategory.skeleton
+        }else{
+            print("bathere")
+            position.x += 0
+            prevX=position.x-sp
+            
+        }
+        self.physicsBody?.categoryBitMask=PhysicsCategory.bat
 //        sk.physicsBody?.contactTestBitMask=PhysicsCategory.player
         self.physicsBody?.contactTestBitMask = PhysicsCategory.player
         //        print(Int(position.x))
 //        print(health)
     }
     
+
+
 }
 
