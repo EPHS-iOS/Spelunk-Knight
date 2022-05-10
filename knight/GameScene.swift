@@ -31,8 +31,8 @@ struct PhysicsCategory {
     //        static let laser : UInt32 = 0b1000//8
 }
 class GameScene: SKScene {
-    var gunEnable=false
-       var swordEnable = false
+    var gunEnable=defaul.bool(forKey: "gunEnable")
+    var swordEnable = defaul.bool(forKey: "swordEnable")
     var carlos : SKNode?
         var steve : SKNode?
     var door : SKNode?
@@ -95,8 +95,7 @@ class GameScene: SKScene {
         return js
     }()
     override func didMove(to view: SKView) {
-        gunEnable=false
-
+//        gunEnable=false
         let timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(fire), userInfo: nil, repeats: true)
         let batTimer =  Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fire2), userInfo: nil, repeats: true)
         
@@ -108,7 +107,7 @@ class GameScene: SKScene {
         atk=false
         atk2 = false
         turnedLeft = false
-        turnedRight = false
+        turnedRight = true
         if(turnedLeft == false && turnedRight == false){
             noTurn = true
         }
@@ -649,6 +648,49 @@ class GameScene: SKScene {
             
         }
     }
+    func attackEnemy(enemy: Bat){
+        if(enemy.position.x<player!.position.x && turnedLeft==true&&atk==true){
+            
+            enemy.health -= 1
+            
+            
+            //            print("hit")
+            atk=false
+            
+        }
+        if(enemy.position.x>player!.position.x && turnedRight==true&&atk==true){
+            
+            enemy.health -= 1
+            
+            //            print("hit")
+            atk=false
+            
+        }
+        if(enemy.health == 0){
+            enemy.position.x-=10000
+            enemy.removeFromParent()
+            
+        }
+    }
+    func attackEnemySword(enemy: Bat){
+        if(enemy.position.x<player!.position.x && turnedLeft==true&&atk2==true){
+            enemy.health -= 1
+            //            print("hit")
+            atk2=false
+            
+        }
+        if(enemy.position.x>player!.position.x && turnedRight==true&&atk2==true){
+            enemy.health -= 1
+            //            print("hit")
+            atk2=false
+            
+        }
+        if(enemy.health == 0){
+            enemy.position.x-=10000
+            enemy.removeFromParent()
+            
+        }
+    }
     func attackEnemySword(enemy: Skeleton){
         if(enemy.position.x<player!.position.x && turnedLeft==true&&atk2==true){
             enemy.health -= 1
@@ -802,6 +844,8 @@ class GameScene: SKScene {
             }
             
             bat.update()
+            attackEnemy(enemy: bat)
+            attackEnemySword(enemy: bat)
             for b in bat.physicsBody!.allContactedBodies(){
                 if b.categoryBitMask==PhysicsCategory.map{
                     
@@ -832,6 +876,49 @@ class GameScene: SKScene {
                 }
             }
         }
+//        for b in bats{
+////            b.update()
+//            if(abs(player!.position.x-b.position.x)<=200&&abs(player!.position.y-b.position.y)<=200){
+//                //            print("hi")
+//                if ((((player?.position.x)!<=b.position.x)&&(b.xScale == -1))||(((player?.position.x)!>=b.position.x)&&(b.xScale==1))){
+//                    if (hp>0){
+//                        hp -= 1
+//                        health.text="x"+String(hp)
+//                        defaul.setValue(hp, forKey: "hp")
+//                        if hp==0{
+//                            endGameTimerStart=true
+//                            attack.removeFromParent()
+//                            sword.removeFromParent()
+//                            shoot.removeFromParent()
+//                            analogJoystick.removeFromParent()
+//                            jump.removeFromParent()
+//                        }
+//                        //                        b.atk=false
+//                    }
+//                }
+//                attackEnemy(enemy: b)
+//            }
+//            if(abs(player!.position.x-b.position.x)<=200&&abs(player!.position.y-b.position.y)<=200){
+//                //print("true")
+//                //print("hi")
+//                if ((((player?.position.x)!<=b.position.x)&&(b.xScale == -1))||(((player?.position.x)!>=b.position.x)&&(b.xScale==1))){
+//                    if (hp>0){
+//                        hp -= 1
+//                        health.text="x"+String(hp)
+//                        defaul.setValue(hp, forKey: "hp")
+//                        if hp==0{
+//                            endGameTimerStart=true
+//                            attack.removeFromParent()
+//                            shoot.removeFromParent()
+//                            analogJoystick.removeFromParent()
+//                            jump.removeFromParent()
+//                        }
+//                        //                        sk.atk=false
+//                    }
+//                }
+//                attackEnemySword(enemy: b)
+//            }
+//        }
         for sk in skeletons{
             sk.update()
             if(abs(player!.position.x-sk.position.x)<=200&&abs(player!.position.y-sk.position.y)<=200){
@@ -971,6 +1058,7 @@ class GameScene: SKScene {
                  if(player!.frame.intersects(carlos!.frame)==true&&gunEnable==false){
                    //  print("hello")
                      gunEnable = true
+                     defaul.set(true, forKey: "gunEnable")
                      self.addChild(gun!)
                      cam.addChild(shoot)
                  }
@@ -978,6 +1066,7 @@ class GameScene: SKScene {
         if(steve != nil){
             if(player!.frame.intersects(steve!.frame)==true&&swordEnable==false){
                 swordEnable = true
+                defaul.set(true, forKey: "swordEnable")
                 cam.addChild(sword)
             }
         }
