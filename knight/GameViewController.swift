@@ -33,9 +33,6 @@ class GameViewController: UIViewController {
             view.isMultipleTouchEnabled = true
         }
 
-        
-      
-      
     }
 
     override var shouldAutorotate: Bool {
