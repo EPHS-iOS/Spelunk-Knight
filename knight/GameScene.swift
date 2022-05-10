@@ -95,6 +95,7 @@ class GameScene: SKScene {
         return js
     }()
     override func didMove(to view: SKView) {
+        gunEnable=false
 
         let timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(fire), userInfo: nil, repeats: true)
         let batTimer =  Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fire2), userInfo: nil, repeats: true)
@@ -269,7 +270,7 @@ class GameScene: SKScene {
             cam.addChild(shoot)
         }
         
-        cam.addChild(sword)
+       // cam.addChild(sword)
     
         fallingVelocity=player?.physicsBody?.velocity.dy
         for col in 0..<tileMap!.numberOfColumns {
@@ -374,8 +375,10 @@ class GameScene: SKScene {
         //addChild(analogJoystick)
         //        print(player?.physicsBody?.velocity.dy)
         analogJoystick.trackingHandler = { [unowned self] data in
+            if(self.isAttacking2==false){
             self.player?.position = CGPoint(x: (self.player?.position.x)! + (data.velocity.x * self.velocityMultiplier),
                                             y: (player?.position.y)!)
+            }
             if(data.velocity.x<0&&turnedLeft==false){
                 var fallingv = fallingVelocity
                 turnedLeft = true
@@ -481,13 +484,13 @@ class GameScene: SKScene {
                            //                    }
                            //                }
                        }
-            if sword.contains(pointOfTouch){
+            if sword.contains(pointOfTouch) && swordEnable{
                       if(isAttacking2==false){
                       playerAttackingSword(player:player!)
                       }
                   }
 
-            if shoot.contains(pointOfTouch){
+            if shoot.contains(pointOfTouch) && gunEnable{
                 
                 if canShoot{
                     bulletsShot.append(Bullet(pos: CGPoint(x: gun!.position.x+(gun!.xScale*(gun?.size.width)!)/2, y: gun!.position.y+(gun?.size.height)!/2-5), direction: gun!.xScale))
@@ -624,7 +627,7 @@ class GameScene: SKScene {
     }
     func attackEnemy(enemy: Skeleton){
         if(enemy.position.x<player!.position.x && turnedLeft==true&&atk==true){
-           
+            print("atackHERE")
             enemy.health -= 1
                 
             
@@ -633,7 +636,7 @@ class GameScene: SKScene {
            
         }
         if(enemy.position.x>player!.position.x && turnedRight==true&&atk==true){
-           
+            print("atackHERE")
             enemy.health -= 1
                 
             //            print("hit")
@@ -717,7 +720,8 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        if canShoot && shoot.parent==nil{
+        
+        if canShoot && gunEnable && shoot.parent==nil{
             cam.addChild(shoot)
         } else if !canShoot && !(shoot.parent==nil){
             shoot.removeFromParent()
@@ -739,6 +743,7 @@ class GameScene: SKScene {
             b.setPosition()
 //            b.setPosition(xScale: gun?.xScale)
             for c in b.physicsBody!.allContactedBodies(){
+                
                 if c.node?.physicsBody?.categoryBitMask==PhysicsCategory.skeleton{
                     for sk in skeletons{
                         if sk.physicsBody==c{
@@ -750,7 +755,15 @@ class GameScene: SKScene {
                         }
                     }
                     b.removeFromParent()
-                } else if !(c.node?.physicsBody?.categoryBitMask==PhysicsCategory.player){
+                }
+                if c.node?.physicsBody?.categoryBitMask==PhysicsCategory.boss{
+                   firstboss!.health-=1
+                    if firstboss!.health==0{
+                        c.node?.position.x-=10000
+                        c.node?.removeFromParent()
+                    }
+                }
+                else if !(c.node?.physicsBody?.categoryBitMask==PhysicsCategory.player){
                     b.removeFromParent()
                 }
             }
@@ -826,7 +839,10 @@ class GameScene: SKScene {
                         sk.atk=false
                     }
                 }
+                if(player!.frame.intersects(sk.frame)){
+                    
                 attackEnemy(enemy: sk)
+                }
             }
             if(abs(player!.position.x-sk.position.x)<=200&&abs(player!.position.y-sk.position.y)<=200){
                 //print("true")
@@ -946,6 +962,12 @@ class GameScene: SKScene {
                      cam.addChild(shoot)
                  }
              }
+        if(steve != nil){
+            if(player!.frame.intersects(steve!.frame)==true&&swordEnable==false){
+                swordEnable = true
+                cam.addChild(sword)
+            }
+        }
         if (door != nil){
             if(player!.frame.intersects(door!.frame)==true){
                 if let view = self.view {
