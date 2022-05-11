@@ -95,7 +95,8 @@ class GameScene: SKScene {
         return js
     }()
     override func didMove(to view: SKView) {
-//        gunEnable=false
+//        gunEnable=true
+//        swordEnable=true
         let timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(fire), userInfo: nil, repeats: true)
         let batTimer =  Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fire2), userInfo: nil, repeats: true)
         
@@ -261,14 +262,17 @@ class GameScene: SKScene {
         cam.addChild(attack)
         shoot.position = CGPoint(x:camera!.position.x+(scene!.size.width)/2.8, y: camera!.position.y-(scene!.size.width)/4)
         shoot.zPosition = 3
-        shoot.size = CGSize(width:scene!.size.width/10,height:scene!.size.width/15)
+        shoot.size = CGSize(width:scene!.size.width/15,height:scene!.size.width/15)
         shoot.alpha = 1
         sword.position = CGPoint(x:camera!.position.x+(scene!.size.width)/2.8, y: camera!.position.y-(scene!.size.width)/11)
-          sword.zPosition = 3
-          sword.size = CGSize(width:scene!.size.width/18,height:scene!.size.width/12)
+          sword.zPosition = 5
+          sword.size = CGSize(width:scene!.size.width/15,height:scene!.size.width/15)
           sword.alpha = 1
         if gunEnable{
             cam.addChild(shoot)
+        }
+        if swordEnable{
+            cam.addChild(sword)
         }
         
        // cam.addChild(sword)
