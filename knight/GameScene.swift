@@ -107,9 +107,11 @@ class GameScene: SKScene {
         atk=false
         atk2 = false
         turnedLeft = false
-        turnedRight = true
+        turnedRight = false
         if(turnedLeft == false && turnedRight == false){
             noTurn = true
+        }else{
+            noTurn=false
         }
         
         for i in 1...18{
@@ -378,7 +380,7 @@ class GameScene: SKScene {
             self.player?.position = CGPoint(x: (self.player?.position.x)! + (data.velocity.x * self.velocityMultiplier),
                                             y: (player?.position.y)!)
             }
-            if(data.velocity.x<0&&turnedLeft==false){
+            if(data.velocity.x<0&&(turnedLeft==false||noTurn==true)){
                 var fallingv = fallingVelocity
                 turnedLeft = true
                 turnedRight = false
@@ -404,7 +406,7 @@ class GameScene: SKScene {
                 //                sk.physicsBody?.collisionBitMask=PhysicsCategory.map | PhysicsCategory.player
                 //                   player?.physicsBody?.velocity.dy=vall!
             }
-            if(data.velocity.x>0&&turnedRight==false){
+            if(data.velocity.x>0&&(turnedRight==false||noTurn==true)){
                 var fallingv = fallingVelocity
                 turnedRight = true
                 turnedLeft = false
@@ -613,6 +615,7 @@ class GameScene: SKScene {
             player.xScale = -1
         }
         
+        
             let texture1 = SKTexture(imageNamed: "knightRun1")
             let texture2 = SKTexture(imageNamed: "knightRun2")
             let texture3 = SKTexture(imageNamed: "knightRun3")
@@ -649,7 +652,7 @@ class GameScene: SKScene {
         }
     }
     func attackEnemy(enemy: Bat){
-        if(enemy.position.x<player!.position.x && turnedLeft==true&&atk==true){
+        if(enemy.position.x<player!.position.x && (turnedLeft==true) && atk==true){
             
             enemy.health -= 1
             
@@ -658,7 +661,7 @@ class GameScene: SKScene {
             atk=false
             
         }
-        if(enemy.position.x>player!.position.x && turnedRight==true&&atk==true){
+        if(enemy.position.x>player!.position.x && (turnedRight==true)&&atk==true){
             
             enemy.health -= 1
             
@@ -762,6 +765,7 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        
         
         if canShoot && gunEnable && shoot.parent==nil{
             cam.addChild(shoot)
