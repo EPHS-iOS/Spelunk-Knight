@@ -652,13 +652,14 @@ class GameScene: SKScene {
         if(enemy.health == 0){
             enemy.position.x-=10000
             enemy.removeFromParent()
-            
+           
         }
     }
     func attackEnemy(enemy: Bat){
         if(enemy.position.x<player!.position.x && (turnedLeft==true) && atk==true){
             
             enemy.health -= 1
+            
             
             
             //            print("hit")
@@ -846,14 +847,19 @@ class GameScene: SKScene {
         fallingVelocity=player?.physicsBody?.velocity.dy
         for bat in bats{
             if(bat.frame.intersects(player!.frame)){
+                attackEnemy(enemy: bat)
+               
                 bat.playercontact=true
             }else{
                 bat.playercontact=false
             }
+            if(abs(player!.position.x-bat.position.x)<=200&&abs(player!.position.y-bat.position.y)<=200){
+                attackEnemySword(enemy: bat)
+            }
+           
             
             bat.update()
-            attackEnemy(enemy: bat)
-            attackEnemySword(enemy: bat)
+         
             for b in bat.physicsBody!.allContactedBodies(){
                 if b.categoryBitMask==PhysicsCategory.map{
                     
