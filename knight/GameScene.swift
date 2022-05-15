@@ -49,6 +49,7 @@ class GameScene: SKScene {
     var healthImage : SKSpriteNode?
     var hp = defaul.integer(forKey: "hp")
     var maxHealth=5
+    var bullets = 5
     var isAttacking : Bool?
     var isAttacking2 : Bool?
     var atk2 : Bool?
@@ -101,7 +102,9 @@ class GameScene: SKScene {
         let batTimer =  Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fire2), userInfo: nil, repeats: true)
         
         if hp <= 0{
+            
             hp = 5
+            
         }
         isAttacking = false
         isAttacking2 = false
@@ -497,8 +500,9 @@ class GameScene: SKScene {
 
             if shoot.contains(pointOfTouch) && gunEnable{
                 
-                if canShoot{
+                if (canShoot&&bullets>0){
                     bulletsShot.append(Bullet(pos: CGPoint(x: gun!.position.x+(gun!.xScale*(gun?.size.width)!)/2, y: gun!.position.y+(gun?.size.height)!/2-5), direction: gun!.xScale))
+                    bullets-=1
                     bulletsShot.last?.physicsBody?.isDynamic = false // 2
                     bulletsShot.last?.physicsBody?.categoryBitMask = PhysicsCategory.bullet // 3
                     bulletsShot.last?.physicsBody?.contactTestBitMask = PhysicsCategory.all// 4
@@ -861,11 +865,7 @@ class GameScene: SKScene {
             bat.update()
          
             for b in bat.physicsBody!.allContactedBodies(){
-                if b.categoryBitMask==PhysicsCategory.map{
-                    
-                    bat.sp = -bat.sp
-                    print("here")
-                }
+ 
                 if b.categoryBitMask==PhysicsCategory.player{
                    
                    // bat.position.x+=2*bat.sp
@@ -880,6 +880,7 @@ class GameScene: SKScene {
                      
                         
                         endGameTimerStart=true
+                        analogJoystick.stick.position.x=0.0
                         attack.removeFromParent()
                         shoot.removeFromParent()
                         sword.removeFromParent()
@@ -935,6 +936,16 @@ class GameScene: SKScene {
 //        }
         for sk in skeletons{
             sk.update()
+            for b in sk.physicsBody!.allContactedBodies(){
+ 
+                if b.categoryBitMask==PhysicsCategory.skeleton{
+                   
+                    sk.sp = -1*sk.sp
+                    sk.xScale = -1*sk.xScale
+                   
+                    
+                }
+            }
             if(abs(player!.position.x-sk.position.x)<=200&&abs(player!.position.y-sk.position.y)<=200){
                 //            print("hi")
                 if ((((player?.position.x)!<=sk.position.x)&&(sk.xScale == -1))||(((player?.position.x)!>=sk.position.x)&&(sk.xScale==1))){
@@ -944,6 +955,7 @@ class GameScene: SKScene {
                         defaul.setValue(hp, forKey: "hp")
                         if hp==0{
                             endGameTimerStart=true
+                            analogJoystick.stick.position.x=0.0
                             attack.removeFromParent()
                             sword.removeFromParent()
                             shoot.removeFromParent()
@@ -967,9 +979,12 @@ class GameScene: SKScene {
                         health.text="x"+String(hp)
                         defaul.setValue(hp, forKey: "hp")
                         if hp==0{
+                            
                             endGameTimerStart=true
+                            analogJoystick.stick.position.x=0.0
                             attack.removeFromParent()
                             shoot.removeFromParent()
+                            analogJoystick.stick.position.x=0.0
                             analogJoystick.removeFromParent()
                             jump.removeFromParent()
                         }
@@ -989,8 +1004,10 @@ class GameScene: SKScene {
                 }
                 if hp==0{
                     endGameTimerStart=true
+                    analogJoystick.stick.position.x=0.0
                     attack.removeFromParent()
                     shoot.removeFromParent()
+                    sword.removeFromParent()
                     analogJoystick.removeFromParent()
                     jump.removeFromParent()
                 }
@@ -1051,6 +1068,7 @@ class GameScene: SKScene {
             endgameTimer+=1
         }
         if (endgameTimer==50){
+         
             if let view = self.view {
                 // Load the SKScene from 'GameScene.sks'
                 //reset maps:

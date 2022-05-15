@@ -40,6 +40,7 @@ class Bat: SKSpriteNode{
     }
     
     func update(){
+      
         self.xScale=self.sp/abs(self.sp)
         self.position.y=baseY
             self.yScale=1
@@ -53,23 +54,21 @@ class Bat: SKSpriteNode{
 //            }
             self.i += 1
             if (Int(prevX)==Int(position.x)&&playercontact==false){
+                
                 sp = -sp
                 xScale = -xScale
+                position.x += sp
+                prevX=position.x-sp
             }
             self.texture=flySprites[Int(self.i/7)]
             if (self.i>=27){
                 i=0
             }
-        if(playercontact==false){
+        
             position.x += sp
             prevX=position.x-sp
         
-        }else{
-            print("bathere")
-            position.x += 0
-            prevX=position.x-sp
-            
-        }
+      
         self.physicsBody?.categoryBitMask=PhysicsCategory.skeleton
 //        sk.physicsBody?.contactTestBitMask=PhysicsCategory.player
         self.physicsBody?.contactTestBitMask = PhysicsCategory.player
