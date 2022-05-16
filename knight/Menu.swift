@@ -57,11 +57,11 @@ class Menu: SKScene {
                         // Present the scene
                         view.presentScene(scene)
                     }
-                    view.showsPhysics = true
+                    view.showsPhysics = false
                     view.ignoresSiblingOrder = true
                     
-                    view.showsFPS = true
-                    view.showsNodeCount = true //hi
+                    view.showsFPS = false
+                    view.showsNodeCount = false
                 }
             }
         }

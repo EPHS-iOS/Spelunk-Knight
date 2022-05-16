@@ -471,8 +471,8 @@ class GameScene: SKScene {
                     view.showsPhysics = false
                     view.ignoresSiblingOrder = true
                     
-                    view.showsFPS = true
-                    view.showsNodeCount = true //hi
+                    view.showsFPS = false
+                    view.showsNodeCount = false //hi
                 }
             }
             if(jump.contains(pointOfTouch)&&canJump==true){
@@ -936,16 +936,16 @@ class GameScene: SKScene {
 //        }
         for sk in skeletons{
             sk.update()
-            for b in sk.physicsBody!.allContactedBodies(){
- 
-                if b.categoryBitMask==PhysicsCategory.skeleton{
-                   
-                    sk.sp = -1*sk.sp
-                    sk.xScale = -1*sk.xScale
-                   
-                    
-                }
-            }
+//            for b in sk.physicsBody!.allContactedBodies(){h=
+//
+//                if b.categoryBitMask==PhysicsCategory.skeleton{
+//
+//                    sk.sp = -1*sk.sp
+//                    sk.xScale = -1*sk.xScale
+//                   
+//
+//                }
+//            }
             if(abs(player!.position.x-sk.position.x)<=200&&abs(player!.position.y-sk.position.y)<=200){
                 //            print("hi")
                 if ((((player?.position.x)!<=sk.position.x)&&(sk.xScale == -1))||(((player?.position.x)!>=sk.position.x)&&(sk.xScale==1))){
@@ -1079,11 +1079,11 @@ class GameScene: SKScene {
                     // Present the scene
                     view.presentScene(scene)
                 }
-                view.showsPhysics = true
+                view.showsPhysics = false
                 view.ignoresSiblingOrder = true
                 
-                view.showsFPS = true
-                view.showsNodeCount = true //hi
+                view.showsFPS = false
+                view.showsNodeCount = false //hi
             }
         }
         if(carlos != nil){
@@ -1118,11 +1118,11 @@ class GameScene: SKScene {
                             // Present the scene
                             view.presentScene(scene)
                         }
-                        view.showsPhysics = true
+                        view.showsPhysics = false
                         view.ignoresSiblingOrder = true
                         
-                        view.showsFPS = true
-                        view.showsNodeCount = true //hi
+                        view.showsFPS = false
+                        view.showsNodeCount = false //hi
                     } else {
                         analogJoystick.disabled=true
                         // Load the SKScene from 'GameScene.sks'
@@ -1139,8 +1139,8 @@ class GameScene: SKScene {
                         view.showsPhysics = false
                         view.ignoresSiblingOrder = true
                         
-                        view.showsFPS = true
-                        view.showsNodeCount = true //hi
+                        view.showsFPS = false
+                        view.showsNodeCount = false //hi
                     }
                 }
             }

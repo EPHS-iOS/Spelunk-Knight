@@ -28,8 +28,8 @@ class GameViewController: UIViewController {
             view.showsPhysics = false
             view.ignoresSiblingOrder = true
             
-            view.showsFPS = true
-            view.showsNodeCount = true //hi
+            view.showsFPS = false
+            view.showsNodeCount = false //hi
             view.isMultipleTouchEnabled = true
         }
 

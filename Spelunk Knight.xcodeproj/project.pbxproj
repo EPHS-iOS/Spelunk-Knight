@@ -115,9 +115,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2B5DF3DF27BABED9003F90F1 /* knight */ = {
+		2B5DF3DF27BABED9003F90F1 /* Spelunk Knight */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2B5DF3F727BABEDD003F90F1 /* Build configuration list for PBXNativeTarget "knight" */;
+			buildConfigurationList = 2B5DF3F727BABEDD003F90F1 /* Build configuration list for PBXNativeTarget "Spelunk Knight" */;
 			buildPhases = (
 				2B5DF3DC27BABED9003F90F1 /* Sources */,
 				2B5DF3DD27BABED9003F90F1 /* Frameworks */,
@@ -127,7 +127,7 @@
 			);
 			dependencies = (
 			);
-			name = knight;
+			name = "Spelunk Knight";
 			productName = knight;
 			productReference = 2B5DF3E027BABED9003F90F1 /* Spelunk Knight.app */;
 			productType = "com.apple.product-type.application";
@@ -147,7 +147,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2B5DF3DB27BABED9003F90F1 /* Build configuration list for PBXProject "knight" */;
+			buildConfigurationList = 2B5DF3DB27BABED9003F90F1 /* Build configuration list for PBXProject "Spelunk Knight" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -160,7 +160,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2B5DF3DF27BABED9003F90F1 /* knight */,
+				2B5DF3DF27BABED9003F90F1 /* Spelunk Knight */,
 			);
 		};
 /* End PBXProject section */
@@ -409,7 +409,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2B5DF3DB27BABED9003F90F1 /* Build configuration list for PBXProject "knight" */ = {
+		2B5DF3DB27BABED9003F90F1 /* Build configuration list for PBXProject "Spelunk Knight" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2B5DF3F527BABEDD003F90F1 /* Debug */,
@@ -418,7 +418,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2B5DF3F727BABEDD003F90F1 /* Build configuration list for PBXNativeTarget "knight" */ = {
+		2B5DF3F727BABEDD003F90F1 /* Build configuration list for PBXNativeTarget "Spelunk Knight" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2B5DF3F827BABEDD003F90F1 /* Debug */,
