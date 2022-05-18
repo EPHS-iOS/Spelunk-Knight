@@ -17,13 +17,13 @@ import SpriteKit
 import GameplayKit
 import Foundation
 import AudioToolbox
-var startLabel: SKLabelNode?
+var startLabel: SKSpriteNode?
 
 
 
 class Menu: SKScene {
     override func didMove(to view: SKView){
-        startLabel = self.childNode(withName: "startLabel") as?SKLabelNode
+        startLabel = self.childNode(withName: "startLabel") as?SKSpriteNode
         
         scene!.enumerateChildNodes(withName: "Tile Map Node") {
             (node, stop) in
