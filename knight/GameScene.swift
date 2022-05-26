@@ -37,7 +37,7 @@ class GameScene: SKScene {
     var gunEnable=defaul.bool(forKey: "gunEnable")
     var swordEnable = defaul.bool(forKey: "swordEnable")
     var carlos : SKNode?
-        var steve : SKNode?
+    var steve : SKNode?
     var door : SKNode?
     var canShoot = true
     var canShootTimer=0
@@ -76,6 +76,7 @@ class GameScene: SKScene {
     var nodesListGround = [SKShapeNode]()
     var skeletons = [Skeleton]()
     var bats = [Bat]()
+    var rats = [Rat]()
     var skelV=CGFloat(80)
     let jump = SKSpriteNode(imageNamed: "jumparrowKnight")
     let attack = SKSpriteNode(imageNamed:"fist")
@@ -252,6 +253,16 @@ class GameScene: SKScene {
             bat.physicsBody?.contactTestBitMask = PhysicsCategory.player
             bat.physicsBody?.contactTestBitMask = PhysicsCategory.map
             self.addChild(bat)
+        }
+        scene!.enumerateChildNodes(withName: "rat") {
+            (node, stop) in
+            self.rats.append(Rat(pos: node.position, siz: CGSize(width: 140,height: 56)))
+        }
+        for rat in rats {
+            rat.physicsBody?.categoryBitMask=PhysicsCategory.skeleton
+            rat.physicsBody?.contactTestBitMask = PhysicsCategory.player
+            rat.physicsBody?.contactTestBitMask = PhysicsCategory.map
+            self.addChild(rat)
         }
         healthImage = SKSpriteNode(texture: SKTexture(imageNamed: "heart"), size: CGSize(width: scene!.size.width/19,height: scene!.size.width/19))
         healthImage!.zPosition=5
@@ -878,6 +889,9 @@ class GameScene: SKScene {
         
         
         fallingVelocity=player?.physicsBody?.velocity.dy
+        for rat in rats{
+            rat.update()
+        }
         for bat in bats{
             if(bat.frame.intersects(player!.frame)){
                 attackEnemy(enemy: bat)

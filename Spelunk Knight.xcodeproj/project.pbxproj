@@ -23,6 +23,7 @@
 		462F9ECB27FDF453007F0362 /* ge.sks in Resources */ = {isa = PBXBuildFile; fileRef = 462F9ECA27FDF453007F0362 /* ge.sks */; };
 		46B3553027C6BC8600C021EB /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B3552F27C6BC8600C021EB /* Menu.swift */; };
 		46B3553227C6BC9E00C021EB /* Menu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 46B3553127C6BC9E00C021EB /* Menu.sks */; };
+		9D034899283FD7BC0064EEBD /* Rat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D034898283FD7BB0064EEBD /* Rat.swift */; };
 		9D153A6927C69A3300E3E3B9 /* skeleton.sks in Resources */ = {isa = PBXBuildFile; fileRef = 9D153A6827C69A3300E3E3B9 /* skeleton.sks */; };
 		9D2D466327D90C2100BDB4E7 /* Skeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2D466227D90C2100BDB4E7 /* Skeleton.swift */; };
 		9D40DFFC2818471A00916600 /* Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D40DFFB2818471A00916600 /* Bullet.swift */; };
@@ -48,6 +49,7 @@
 		462F9ECA27FDF453007F0362 /* ge.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ge.sks; sourceTree = "<group>"; };
 		46B3552F27C6BC8600C021EB /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		46B3553127C6BC9E00C021EB /* Menu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Menu.sks; sourceTree = "<group>"; };
+		9D034898283FD7BB0064EEBD /* Rat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rat.swift; sourceTree = "<group>"; };
 		9D153A6827C69A3300E3E3B9 /* skeleton.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = skeleton.sks; sourceTree = "<group>"; };
 		9D2D466227D90C2100BDB4E7 /* Skeleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skeleton.swift; sourceTree = "<group>"; };
 		9D34B3E527BEB82C00FC137E /* knight.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = knight.entitlements; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				9D2D466227D90C2100BDB4E7 /* Skeleton.swift */,
 				9D153A6827C69A3300E3E3B9 /* skeleton.sks */,
 				2B5DF3E927BABED9003F90F1 /* GameScene.swift */,
+				9D034898283FD7BB0064EEBD /* Rat.swift */,
 				9D40DFFB2818471A00916600 /* Bullet.swift */,
 				9D40DFFD2818476F00916600 /* Gun.swift */,
 				2B5DF3EB27BABED9003F90F1 /* GameViewController.swift */,
@@ -199,6 +202,7 @@
 				9D40E0002821811400916600 /* Bat.swift in Sources */,
 				2B5DF3EC27BABED9003F90F1 /* GameViewController.swift in Sources */,
 				2B5DF3E427BABED9003F90F1 /* AppDelegate.swift in Sources */,
+				9D034899283FD7BC0064EEBD /* Rat.swift in Sources */,
 				46B3553027C6BC8600C021EB /* Menu.swift in Sources */,
 				9D40DFFC2818471A00916600 /* Bullet.swift in Sources */,
 			);
