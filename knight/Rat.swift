@@ -10,7 +10,7 @@ import SpriteKit
 
 class Rat: SKSpriteNode{
     var prevX:CGFloat
-    var sp=CGFloat(6)
+    var sp=CGFloat(3)
     var playercontact = false
     var health = 1
     var sizee:CGSize
@@ -38,7 +38,7 @@ class Rat: SKSpriteNode{
     }
     
     func update(){
-      
+//        print(self.position.x)
         self.xScale=self.sp/abs(self.sp)
 //        self.position.y=baseY
             self.yScale=1
@@ -51,7 +51,7 @@ class Rat: SKSpriteNode{
 //                self.physicsBody?.allowsRotation=false
 //            }
             self.i += 1
-            if (Int(prevX)==Int(position.x)&&playercontact==false){
+            if (abs(Int(prevX)-Int(position.x))<=1&&playercontact==false){
                 
                 sp = -sp
                 xScale = -xScale

@@ -44,6 +44,7 @@ class GameScene: SKScene {
     var endGameTimerStart=false
     var endgameTimer=0
     var batCanAttack = true
+    var ratCanAttack = true
     //    var sk=Skeleton(pos: CGPoint(x: 500,y: 300), siz: CGSize(width: 132,height: 198))
     var menu = SKLabelNode(text: "menu")
     var timer = Timer()
@@ -108,6 +109,7 @@ class GameScene: SKScene {
         
         let timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(fire), userInfo: nil, repeats: true)
         let batTimer =  Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fire2), userInfo: nil, repeats: true)
+        let ratTimer =  Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(fire3), userInfo: nil, repeats: true)
         
         if hp <= 0{
             
@@ -388,16 +390,20 @@ class GameScene: SKScene {
              }
              
          }
-    @objc func fire2()
-    {
-        
+    @objc func fire2(){
         if(batCanAttack==true){
             batCanAttack=false
         }else{
             batCanAttack=true
         }
-             
-         }
+    }
+    @objc func fire3(){
+        if(ratCanAttack==true){
+            ratCanAttack=false
+        }else{
+            ratCanAttack=true
+        }
+    }
     func setupJoystick() {
         //addChild(analogJoystick)
         //        print(player?.physicsBody?.velocity.dy)
@@ -703,7 +709,51 @@ class GameScene: SKScene {
             
         }
     }
+    func attackEnemy(enemy: Rat){
+        if(enemy.position.x<player!.position.x && (turnedLeft==true) && atk==true){
+            
+            enemy.health -= 1
+            
+            
+            
+            //            print("hit")
+            atk=false
+            
+        }
+        if(enemy.position.x>player!.position.x && (turnedRight==true)&&atk==true){
+            
+            enemy.health -= 1
+            
+            //            print("hit")
+            atk=false
+            
+        }
+        if(enemy.health == 0){
+            enemy.position.x-=10000
+            enemy.removeFromParent()
+            
+        }
+    }
     func attackEnemySword(enemy: Bat){
+        if(enemy.position.x<player!.position.x && turnedLeft==true&&atk2==true){
+            enemy.health -= 1
+            //            print("hit")
+            atk2=false
+            
+        }
+        if(enemy.position.x>player!.position.x && turnedRight==true&&atk2==true){
+            enemy.health -= 1
+            //            print("hit")
+            atk2=false
+            
+        }
+        if(enemy.health == 0){
+            enemy.position.x-=10000
+            enemy.removeFromParent()
+            
+        }
+    }
+    func attackEnemySword(enemy: Rat){
         if(enemy.position.x<player!.position.x && turnedLeft==true&&atk2==true){
             enemy.health -= 1
             //            print("hit")
@@ -793,10 +843,10 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
-       print("first")
-        print(canNotPassSkeleton)
-        print("second")
-        print(canNotPass)
+//       print("first")
+//        print(canNotPassSkeleton)
+//        print("second")
+//        print(canNotPass)
         
         if(endGameTimerStart==true){
             analogJoystick.stick.position.x=0.0
@@ -819,7 +869,7 @@ class GameScene: SKScene {
         }
         
         if(analogJoystick.stick.position.x>0){
-            print("updatexscale")
+//            print("updatexscale")
             player!.xScale = 1
         }
         if(analogJoystick.stick.position.x<0){
@@ -862,6 +912,18 @@ class GameScene: SKScene {
                             bat.removeFromParent()
                         }
                     }
+                    for rat in bats {
+                        if rat.physicsBody==c{
+                            rat.health-=1
+                        }
+                        if rat.health==0{
+//                            c.node?.position.x-=10000
+//                            c.node?.removeFromParent()
+                            rat.position.x-=10000
+                            rat.alpha=0
+                            rat.removeFromParent()
+                        }
+                    }
                     b.removeFromParent()
                 }
                 if c.node?.physicsBody?.categoryBitMask==PhysicsCategory.boss{
@@ -895,7 +957,7 @@ class GameScene: SKScene {
         for bat in bats{
             if(bat.frame.intersects(player!.frame)){
                 attackEnemy(enemy: bat)
-               
+                
                 bat.playercontact=true
             }else{
                 bat.playercontact=false
@@ -903,35 +965,79 @@ class GameScene: SKScene {
             if(abs(player!.position.x-bat.position.x)<=200&&abs(player!.position.y-bat.position.y)<=200){
                 attackEnemySword(enemy: bat)
             }
-           
+            
             
             bat.update()
-         
+            
             for b in bat.physicsBody!.allContactedBodies(){
- 
+                
                 if b.categoryBitMask==PhysicsCategory.player{
-                   
-                   // bat.position.x+=2*bat.sp
+                    
+                    // bat.position.x+=2*bat.sp
                     if (hp>0&&batCanAttack==true){
-                    hp -= 1
-                    batCanAttack = false
-                        print("yes")
-                    health.text="x"+String(hp)
-                    defaul.setValue(hp, forKey: "hp")
-                    if hp==0{
-                        
-                     
-                        
-                        endGameTimerStart=true
-                        
-                        attack.removeFromParent()
-                        shoot.removeFromParent()
-                        sword.removeFromParent()
-                        analogJoystick.stick.position.x=0.0
-                        analogJoystick.stick.position.y=0.0
-                        
-                        jump.removeFromParent()
+                        hp -= 1
+                        batCanAttack = false
+//                        print("yes")
+                        health.text="x"+String(hp)
+                        defaul.setValue(hp, forKey: "hp")
+                        if hp==0{
+                            
+                            
+                            
+                            endGameTimerStart=true
+                            
+                            attack.removeFromParent()
+                            shoot.removeFromParent()
+                            sword.removeFromParent()
+                            analogJoystick.stick.position.x=0.0
+                            analogJoystick.stick.position.y=0.0
+                            
+                            jump.removeFromParent()
+                        }
                     }
+                }
+            }
+        }
+        for rat in rats{
+            if(rat.frame.intersects(player!.frame)){
+                attackEnemy(enemy: rat)
+                
+                rat.playercontact=true
+            }else{
+                rat.playercontact=false
+            }
+            if(abs(player!.position.x-rat.position.x)<=200&&abs(player!.position.y-rat.position.y)<=200){
+                attackEnemySword(enemy: rat)
+            }
+            
+            
+            rat.update()
+            
+            for r in rat.physicsBody!.allContactedBodies(){
+                
+                if r.categoryBitMask==PhysicsCategory.player{
+                    
+                    // bat.position.x+=2*bat.sp
+                    if (hp>0&&ratCanAttack==true){
+                        hp -= 1
+                        ratCanAttack = false
+//                        print("yes")
+                        health.text="x"+String(hp)
+                        defaul.setValue(hp, forKey: "hp")
+                        if hp==0{
+                            
+                            
+                            
+                            endGameTimerStart=true
+                            
+                            attack.removeFromParent()
+                            shoot.removeFromParent()
+                            sword.removeFromParent()
+                            analogJoystick.stick.position.x=0.0
+                            analogJoystick.stick.position.y=0.0
+                            
+                            jump.removeFromParent()
+                        }
                     }
                 }
             }
@@ -1166,31 +1272,23 @@ class GameScene: SKScene {
             }
         }
         if (door != nil){
-            var allow = false
+            var allow = true
             for bat in bats {
                 if(bat.parent != nil){
-                    allow=true
-                }
-                if(bat.parent == nil&&allow==false){
                     allow=false
                 }
             }
-            if(allow==false){
-                canNotPass=false
-            }
-            var allowskel = false
             for sk in skeletons {
                 if(sk.parent != nil){
-                    allowskel = true
-                }
-                if(sk.parent == nil && allowskel==false){
-                    allowskel=false
+                    allow = false
                 }
             }
-            if(allowskel==false){
-                canNotPassSkeleton=false
+            for rat in rats{
+                if(rat.parent != nil){
+                    allow = false
+                }
             }
-            if(player!.frame.intersects(door!.frame)==true&&canNotPassSkeleton==false&&canNotPass==false){
+            if(player!.frame.intersects(door!.frame)==true&&allow==true){
                 if let view = self.view {
                     if self.view?.scene!.name=="GameScene"{
                         analogJoystick.disabled=true
