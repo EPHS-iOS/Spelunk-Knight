@@ -4,9 +4,11 @@ Sai, Kanishk, Rishi, and Stephane's game
 Spelunk Knight is a metrovania game. The end goal is an open world with various NPCs, bosses, and various playable characters. We are using SpriteKit technology through Xcode to build our game, and a tilemap node for map design. 
 
 Version 1.3 build 1:
-Display hit marker for attacking enemies, new enemy: rat, bug fixes.
+
+Display hit marker for attacking enemies, new enemy: rat, new app icon, bug fixes.
 
 Version 1.2 build 2:
+
 Full map with working teleportation, map background, new enemy: bat, a boss battle, 3 different attacks for player: fist, sword, and gun, Non-Playable characters that grant attacks, bug fixes.
 
 ![IMG_0451](https://user-images.githubusercontent.com/61213336/172192983-d36cb052-166a-4031-8616-8d44f0193d2b.png)
