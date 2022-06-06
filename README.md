@@ -7,6 +7,10 @@ Version 1.3 build 1:
 
 Display hit marker for attacking enemies, new enemy: rat, new app icon, bug fixes.
 
+![Screen Shot 2022-06-06 at 10 32 46 AM](https://user-images.githubusercontent.com/61213336/172194186-c22a4e3c-88d6-41aa-840f-770f7818b3ed.png)
+![Screen Shot 2022-06-06 at 10 33 09 AM](https://user-images.githubusercontent.com/61213336/172194201-08801ae9-8041-4cf5-946b-3a8f627ef0b3.png)
+
+
 Version 1.2 build 2:
 
 Full map with working teleportation, map background, new enemy: bat, a boss battle, 3 different attacks for player: fist, sword, and gun, Non-Playable characters that grant attacks, bug fixes.
